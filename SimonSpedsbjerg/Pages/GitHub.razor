@@ -1,0 +1,15 @@
+﻿@page "/GitHub"
+
+<h3>GitHub</h3>
+<ul>
+    @foreach(Repo repo in Program.repos) {
+    <li>
+        <a href="@repo.Url">@repo.Name</a>
+    </li>
+    }
+</ul>
+
+@code {
+
+}
+
