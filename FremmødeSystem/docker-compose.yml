@@ -6,10 +6,7 @@ services:
     image: spedsbjerg/spedsbjergwebsite:latest
     restart: always
     ports:
-      - "80:80"
-      - "8080:80"
       - "8080:8080"
-      - "443:443"
   watchtower:
     image: containrrr/watchtower
     restart: always
