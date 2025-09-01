@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+
+
+<div class="main-layout">
+    <nav class="navbar">
+        <div class="home">
+            <NavLink href="/" class="home-button">Spedsbjerg</NavLink>
+        </div>
+        <div class="menu">
+            <NavLink href="/CV" class="navbar-button">CV</NavLink>
+
+            <div class="dropdown">
+                <button class="dropbtn">Projects</button>
+                <div class="dropdown-content">
+                    <NavLink href="/projects/Masters">Root-Causing and Event Identification Through Sensor Data</NavLink><div></div>
+                    <NavLink href="/projects/RDP">Rare Disease Predicter</NavLink><div></div>
+                    <NavLink href="/projects/Brutus">Brutus (Game project)</NavLink><div></div>
+                    <NavLink href="/projects/BalticBots">BalticBots</NavLink><div></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="body-content">
+        @Body
+    </div>
+</div>

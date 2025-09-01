@@ -1,0 +1,56 @@
+name: LTSWorkFlow
+
+on:
+  push:
+    branches: [ "dev", "main" ]
+  pull_request:
+    branches: [ "dev", "main" ]
+
+env:
+  docker_username: spedsbjerg
+  docker_password: ${{ secrets.DOCKER_PASSWORD }}
+  docker_repo: spedsbjergwebsite
+  GIT_COMMIT: ${{ github.sha }}
+
+
+jobs:
+  BuildFrontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./website
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+
+  PushFrontendToDocker:
+    runs-on: ubuntu-latest
+    needs: BuildFrontend
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Login To Dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{env.docker_username}}
+          password: ${{env.docker_password}}
+      - name: Extract Meta-data
+        id: Meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ghcr.io/frontend
+      - name: Build And Push FrontendImage
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./dockerfile
+          push: true
+          tags: spedsbjerg/spedsbjergwebsite:latest

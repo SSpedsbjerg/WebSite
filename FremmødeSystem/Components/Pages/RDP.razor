@@ -1,0 +1,782 @@
+﻿@page "/projects/RDP"
+
+<div class="rdd-theme">
+    <header class="rdd-hero">
+        <div class="rdd-container">
+            <h1 class="rdd-hero-title">Rare Disease Predicter</h1>
+            <p class="rdd-hero-subtitle">
+                A software project which aim is to provide general practioners a set of potential rarer diseases which they may not have considered. For a more in depth dive into this project, read the report for the project.
+            </p>
+            <p class="rdd-hero-subtitle">Beaware that this page documents the prototyping of this project to determine validity of the product. Therefore many shortcuts are made which is already fixed in the newer version available on the github.</p>
+            <div class="rdd-hero-actions">
+                <a class="rdd-btn rdd-btn-primary" href="https://github.com/SSpedsbjerg/RareDiseasePredicter">Github</a>
+                <a class="rdd-btn rdd-btn-ghost" href="#docs">Report</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="rdd-container">
+        <section class="rdd-section">
+            <h2 class="rdd-section-title">Introduction</h2>
+            <p class="rdd-lead">
+                We see a risk that a healthcare professional might miss certain rare conditions a patient might suffer from, because the rarity makes so the doctor or nurse might not suspect it.
+            </p>
+            <p class="rdd-lead">
+                In this project, the group has developed a web application which is designed for general practitioners which they can use to indicate whether they should send the patient to a specialist.
+                Currently, general practitioners don't have any tools to help them to spot diseases which they might not know about. How are they supposed to help you with a potential rare disease which they have never heard about; this is when our program comes in. In suggesting possible rare diseases from the symptoms, the patient has, the general practitioner can look at the ones our system deems most likely and when to decide whether there is a need to send the patient to a specialist. If the general practitioner does not deem it necessary, then the general practitioner and their patient may feel more confident and less worried and if it were the case that the general practitioner sends the patient to a specialist, then the patient might be treated earlier or be sure that they do not suffer from a rare disease.
+                Throughout this report, there will be the analysis of the case, the designing of the solution, how the solution was implemented and a discussion on how effective the solution was implemented and other notable topics worth retrospection.
+            </p>
+        </section>
+
+        <section class="rdd-section">
+            <h2 class="rdd-section-title">Theory</h2>
+            <p>Throughout this section, theory will be laid out to the subject of medicine, this section will not include topics about software and engineering practices used as these will be laid out in future sections.</p>
+            <p>
+                In Denmark, a rare disease is classified as 2 out of 10.000 people getting it. The classification varies between organization, EU declares a rare disease as 1 out of 2.000 and states that there is between 6.000 - 8.000 rare diseases in Europe, W.H.O. has around 5.500 rare diseases in their database. In the U.S.A. for disease to be classified as rare less than 1 out of 1.250 must have it. For this project, the Danish classification will be used in this project.
+            </p>
+            <p>
+                Rare disease and orphan disease unless specified will mean the same in this project as some countries differ between definitions.
+            </p>
+            <h3>Scale of the Problem</h3>
+            <p>
+                It is currently estimated that around 30.000-50.000 people in Denmark have a rare disease based on the Danish definition of a rare disease. All these cases comes from ~800 known rare diseases documented and seen in Denmark. Worldwide, it is estimated that between 262.2 and 446.2 million people are affected by a rare disease, that totals to around 3.5-5.9% of the world’s population. All these cases are derived from 6172 unique rare diseases, where 71.9% comes from genetics and 69.9% which are exclusively pediatric.
+            </p>
+            <h3>Discovery of Disease</h3>
+            <p>
+                For 25% of patients which receive a rare diseases could expect a span of 5 - 30 years before they get the correct diagnosis. 40% of people getting a rare disease were misdiagnosed or did not get a diagnosis. Often there is a problem when reporting to ones doctor as information is an important risk factor if one is to be diagnosed correctly as-well as poverty level and family size.
+                As this project will focus on general practitioners stated in section, general practitioners are frequently met with rare diseases and thereby play an important role. The general practitioner has to ask themselves frequently if this patient could suffer from a rare disease which shares its symptoms with common diseases.
+                An example of a possible case of this would be with Pompe's disease which has a symptom of muscle fatigue and is a possible case which a misdiagnosis could occur for a general practitioner.
+                General practitioners in Denmark has a set of possible diseases which they would go through, which they learned through their studies, ruling out possible diagnoses and trying to figure out the correct one.
+            </p>
+            <h3>SymptomTjekker</h3>
+            <p>SymptomTjekker is a System developed by Sygeforsikring Danmark and is a tool designed for patients to suggest a possible disease. The system works by the patient putting in symptoms and a possible disease is shown. The database of diseases are limited and is mostly focused on common diseases. The system is designed for patients and not for doctors and may increase the knowledge of the patient on possible diseases, the system is not designed to make a final diagnosis.</p>
+            
+            <h3>WebMD</h3>
+            <p>WebMD is an online platform where you can acquire information about diseases. WebMD also hosts its own disease determiner. The main concept of the system is very similar to the SymptomTjekker, where you type in the symptoms you experience, and the system will end up giving a suggestion based on their own algorithm. WebMD’s disease determiner is more globally accessible due to being written in English but has also been around since 2005, whereas SymptonTjekker only has been around for 2 years.</p>
+            <p>WebMD has its own interface describing the individual diseases; the symptoms related to the disease, how common it is, an overview and risk factors related to the disease.</p>
+            <p>WebMD uses its own resources to pinpoint the potential cause of the symptoms. The team was unable to locate the size and elements of the WebMD’s disease database.</p>
+            <h3>Discussion with a General Practioner</h3>
+            <p>A meeting was held with a general practitioner from Fænøsundlægerne. Here are some of the things learnt from the discussion which was held. General Practitioners in Denmark do not have software tools for diagnosing patients as they are generally diagnosing the symptoms and not the diseases, diagnosis is most commonly diagnosed higher up in the system. In Denmark there is a very limited supplier of software systems for general practitioners, and they vary in features. It is the practitioner’s estimation that the system supplier is hard to work with and the system might have to be a separate system but an integrated system would be a better solution. The general practitioner assumed that there were 3000 general practitioners in Denmark and every third of them had a concurrent patient with a diagnosed rare disease. compare to section It may take very long time to be diagnosed, but the practitioners estimation was that in Denmark, you are either diagnosed very quickly within months or you are not diagnosed at all, and possible reasons for this in other countries may be lack of access to healthcare, transport time, cost of special trained doctors, which is usually not a problem in Denmark but may be in other countries. The practitioner did not know about tools mentioned in section Sygedomstjekker and WebMD or any similar. This may be because these tools are designed for patients. The practitioner also agreed with the statement in section 'Discovery of Disease' about the fact that patients knowledge about disease helps in getting the correct diagnosis, the following reasons for this is that another disease can either ruled out or checked for which would make the practitioner more secure in diagnosis, and it would help the patient in not feeling worried about the chance that the practitioner might have missed something. The program could also feature less common diseases, but not rare enough to be rare diseases as less common diseases are still hard to diagnose.</p>
+            <h3>Summary</h3>
+            <p>There are many rare diseases in Denmark and many people suffer from it and general practitioners do not have any software tools to combat this, increasing the confidence in the practitioner’s estimation could help them a lot when deciding whether to send the patient to specialist or not. Making the program available to patients as well increases the patient’s happiness in practitioners’ diagnosis if they ask them about any suspected diseases. There exist tools for patients but none for practitioners.</p>
+        </section>
+
+        <section class="rdd-section">
+            <h2 class="rdd-section-title">Analysis</h2>
+            <p>In the following section, an analysis will be made of the problem and the start of the program’s design as to which requirements it must adhere to.</p>
+            <h3 class="rdd-section-title">Scope</h3>
+            <p>In this project the following topics will be excluded:</p>
+            <ul class="rdd-itemize">
+                <li>
+                    <strong>No Mobile App:</strong><br>
+                    We will not be making an app as we see it as a deterrent for general practitioners.
+                </li>
+                <li>
+                    <strong>The program will not have patients as a target client:</strong><br>
+                    Patients are not trained in the profession and will have a risk of misjudging the data given.
+                    Yet, as noted in the Theory section, we found that having it available to patients will have a positive effect.
+                </li>
+                <li>
+                    <strong>It will be developed for general practitioners only:</strong><br>
+                    Specially trained doctors will be able to judge on an individual basis and diagnose more accurately than a program could.
+                </li>
+                <li>
+                    <strong>It will focus on rare diseases:</strong><br>
+                    This program will be targeting rare conditions as doctors are at high risk of misdiagnosing.
+                </li>
+            </ul>
+
+            <h3>Requirements</h3>
+            In this section, requirements will be placed for the program. The analysis will be using the Must, Should, Could, Would analysis.
+            <div class="rdd-table-container">
+                <table class="rdd-table">
+                    <thead>
+                        <tr>
+                            <th colspan="5">Functional Requirements</th>
+                        </tr>
+                        <tr>
+                            <th>Function nr.</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>M.S.C.W.</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F1</td>
+                            <td>Browser Application</td>
+                            <td>
+                                We can't be sure that all companies which provide general care service would be
+                                willing to install a program on their computers, making it web based increases the uses.
+                            </td>
+                            <td class="rdd-must">Must</td>
+                            <td>
+                                It is a must for the application to function to have a GUI in some way or shape.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F2</td>
+                            <td>Patients can access</td>
+                            <td>
+                                The more information available for every party, the more likely the patient gets the right diagnosis,
+                                but it is not intended to be a product for patients. However, it could be beneficial if the patient has an
+                                idea of what disease they might have before being diagnosed.
+                            </td>
+                            <td class="rdd-could">Could</td>
+                            <td>
+                                Making this available to patients is not the top priority since the focus is for general practitioners.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F3</td>
+                            <td>The program will exclude common diseases</td>
+                            <td>
+                                The doctor will most likely already be able to confidently diagnose the common diseases,
+                                but not less common diseases.
+                            </td>
+                            <td class="rdd-must">Must</td>
+                            <td>This is a core feature of the program so this is required.</td>
+                        </tr>
+                        <tr>
+                            <td>F4</td>
+                            <td>The program has to suggest diseases based on symptoms</td>
+                            <td>
+                                There are many rare diseases; to suggest a disease the program would require symptoms.
+                            </td>
+                            <td class="rdd-must">Must</td>
+                            <td>This is a core feature in the program so this is required.</td>
+                        </tr>
+                        <tr>
+                            <td>F5</td>
+                            <td>The program will reference to sites relevant to the disease</td>
+                            <td>
+                                When a general practitioner finds a possible match, they have to find resources to further research the suggested disease.
+                            </td>
+                            <td class="rdd-could">Could</td>
+                            <td>
+                                As this is an extra nice-to-have feature, it is not required to have.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F6</td>
+                            <td>Low Server computing</td>
+                            <td>
+                                The server has to be able to compute possibilities within a second.
+                            </td>
+                            <td class="rdd-should">Should</td>
+                            <td>
+                                If the program is too slow, general practitioners might not use the program.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="rdd-table-container">
+                <table class="rdd-table">
+                    <thead>
+                        <tr>
+                            <th colspan="5">Non-Functional Requirements</th>
+                        </tr>
+                        <tr>
+                            <th>Function nr.</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>M.S.C.W.</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>nF1</td>
+                            <td>High Availability</td>
+                            <td>
+                                The general practitioners should be able to access this resource
+                                from any point during working hours and reach 99% uptime within
+                                specified period.
+                            </td>
+                            <td class="rdd-should">Should</td>
+                            <td>
+                                Servers can be taken down outside of working hours for maintenance,
+                                updates, or other improvements.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>nF2</td>
+                            <td>Good Reliability</td>
+                            <td>
+                                The general practitioners should be able to access this resource at
+                                any point and reducing errors will help keep the system up and
+                                running. The goal is that if the same data is given, the same
+                                diseases will be returned.
+                            </td>
+                            <td class="rdd-should">Should</td>
+                            <td>It helps to reach a High Availability.</td>
+                        </tr>
+                        <tr>
+                            <td>nF3</td>
+                            <td>Acceptable Scalability</td>
+                            <td>
+                                The program scalability is important, yet the project has a time
+                                constraint. The goal is that all non-static classes must implement
+                                an interface.
+                            </td>
+                            <td class="rdd-should">Should</td>
+                            <td>There is a sharp time constraint.</td>
+                        </tr>
+                        <tr>
+                            <td>nF4</td>
+                            <td>Acceptable Maintainability</td>
+                            <td>
+                                The program will run a server and low maintenance will be nice to
+                                have, but there is a time constraint.
+                            </td>
+                            <td class="rdd-could">Could</td>
+                            <td>The expense for running this application is not expected to be too high.</td>
+                        </tr>
+                        <tr>
+                            <td>nF5</td>
+                            <td>Good UX</td>
+                            <td>
+                                General practitioners vary in their ability to use computers,
+                                therefore we aim for the average user to be able to navigate the
+                                page without committing errors.
+                            </td>
+                            <td class="rdd-should">Should</td>
+                            <td>
+                                There is no similar software tool like this project and thereby no
+                                one has experience in such a program.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Analysis Diagrams</h3>
+            <p>In this following section, a concept of the program will be shown using different UML Diagrams, these are created after the requirements has been set and are designed after said requirements.</p>
+            <h3>Class Diagrams</h3>
+            <p>
+                In the following class diagram, the backend will do the calculations for the diseases. The backend will run on a separate server from the frontend to decrease coupling and separate base on concerns.
+            </p>
+            <p>
+                The backend will be written in C\#, The reason for this is nF3 and F5. Using a scripting language like Python, JavaScript or similar, the code might take too long once all entries of rare diseases have been entered into the database. C\# and Java have better tools for scalability than C/C++ and the extra time saved by using C/C++ is not big enough to justify doing that. When it is between C\# and Java, C\# was chosen due to preference.
+            </p>
+            <div class="rdd-image-container">
+                <img src="/Other/AnalysisClassDiagram.png" alt="Backend Analysis Class Diagram" class="rdd-image" />
+                <p class="rdd-image-caption">Backend Class Diagram</p>
+            </div>
+            <p>
+                The backend has a DataController, this is static and would in C\# be a singleton, this one will control all flow through the system, and it will create RDDeterminers when needed.
+                The RDDeterminer will calculate the rare diseases and will access the database for a read. The RDDeterminer will calculate the diseases by using a given List of Symptoms given from the DataController. The RDDeterminer will then lay a weight on all the diseases to indicate the likelihood of the of this disease.
+            </p>
+
+            <p>
+                For the Frontend, we decided to use the Blazor framework provided by the .NET languages. Blazor is a framework which combines HTML, CSS, and C\# used to develop front end web applications. There is no specific reasoning for the choice of frontend framework, but due to the nature of the frontend not having a lot of elements, we are able to choose more freely based on preference rather than what is required from a framework.
+            </p>
+            <div class="rdd-image-container">
+                <img src="/Other/AnalysisFrontend.png" alt="Frontend Analysis Class Diagram" class="rdd-image" />
+                <p class="rdd-image-caption">Frontend functionality</p>
+            </div>
+            <p>
+                For the diagram above, we have created a general mockup of how we envision roughly how the layout of the front end will look. To the left side, all the different diseases will end up being displayed. On the right side, there is a search bar where the user can type out any symptoms and it will end up being displayed on the list below. Once all the symptoms have been selected, the user can press the calculate button and a result of possible diseases should appear on the left side of the web page.
+            </p>
+            <div class="rdd-image-container">
+                <img src="/Other/SequenceBackend.png" alt="Sequence Diagram for backend" class="rdd-image" />
+                <p class="rdd-image-caption">Sequence Diagram for backend</p>
+            </div>
+            <p>
+                The sequence diagram above for the backend shows how the backend operates and in what order. It begins with the initialization sequence, where the backend sends the symptoms to the frontend. Afterwards it will begin listening to requests coming from the front end and respond to them accordingly to the diagram.
+            </p>
+
+            <p>The frontend is expected to be minimal in nature, most functionality of the application is going to lie in the backend.</p>
+            <div class="rdd-image-container">
+                <img src="/Other/SequenceFront.png" alt="Frontend to backend" class="rdd-image" />
+                <p class="rdd-image-caption">Frontend to backend</p>
+            </div>
+            <p>A general practitioner will access the webpage and enter symptoms into the frontend, the frontend will forward these into the backend which will return a list of diseases in a JSON format.</p>
+            <p>To be able to show what features should be accessible by the General Practitioner, and what other features should be available for an administrator, a use case diagram was created for this.</p>
+            <div class="rdd-image-container">
+                <img src="/Other/UsecaseDiagram.png" alt="Actor diagram" class="rdd-image" />
+                <p class="rdd-image-caption">Actor diagram</p>
+            </div>
+            <p>
+                For the use case diagram above, it shows what types of features are available to each type of actor. The user’s category should only have access to the “Get suggestions” use case, as it is the only use case to have relevance to the users. The administrator should have access to all features, as they are responsible for the data being correct and to add new diseases/symptoms/regions if the need arises.
+            </p>
+
+            <h3>Methods based on Analysis</h3>
+            <p>
+                As the team consists of 2 developers, we're able to constantly talk while developing, reducing the risk of not asking questions to other parts of the system. Therefore, no system nor communication line must be set up to increase communication between areas in the project.
+
+                We expect the general practitioners to have constant internet access and the uncertainty whether they would allow new programs to be installed on their work computers points to a web-based solution.
+
+                The team has decided on delivering updates in batches, having several features together. We do this so an analysis is done in every iteration. We do this because we expect future knowledge within the field of rare diseases to change and the system might have to change with it to accommodate the new knowledge. Allowing new study of requirements for the field would help make the product better in handling future requirements. While a CI-CD approach would work great with most web-based projects, the unknowns of rare diseases do require a more in-depth analysis each time. As well as we do not see the need for rapid updates to changes as this field does not change often enough to justify a CI-CD or similar approach. These are the thoughts and requirements taken into consideration for us to work iteratively.
+
+                The team doesn't use any algorithmic analysis for time planning. The reason is because of the subjective manner of those methods and the relatively unknown size of the code base and the codes complexity. The investment analysis method this project will be using is by intuition because of what the team considers the other methods to be equally flawed.
+
+                For the scope, a brainstorm is conducted, and a discussion is held of the items which is thought of.
+            </p>
+        </section>
+
+        <section>
+            <h2>Design</h2>
+            <p>
+                In the design phase, the focus will be on the backend as that is the main
+                part of the project and there is a limited amount of design and work
+                required for the frontend.
+            </p>
+
+            <h3>Class Diagram</h3>
+            <p>
+                The group has decided to split up the classes into several packages/folders.
+                The main package is the controller package, there is also implementation of
+                interfaces and a Module package.
+            </p>
+
+            <div class="rdd-image-container">
+                <img src="/Other/BackendClassDiagram.png" alt="Backend Class Diagram" class="rdd-image">
+                <p class="rdd-image-caption">Figure 1: Class diagram of the backend</p>
+            </div>
+
+            <p>
+                The controller package will contain <code>DataController</code>.
+                DataController is a static singleton implementation that controls the flow
+                of data between the frontend and backend. The DataController can access DatabaseController directly, but this is intended for admins only, this is used to add, change, or delete diseases and symptoms. When a client uses the system, their data is sent through the RDDeterminer instead which is only allowed to read. The RDDeterminer is the implementation which calculates the rare diseases based on the given symptoms. The RDDeterminer requests the DataRetriver which is allowed to read from the DatabaseController. The DatabaseController is a singleton and is the only one allowed to write and read from the database to avoid race conditions.
+
+            </p>
+
+            <h3>Sequence Diagram</h3>
+            <p>
+                The sequence of dataflow contains an Initialization phase which is used to
+                update the frontend with possible symptoms instead of having a fixed list of
+                symptoms.
+            </p>
+
+            <div class="rdd-image-container">
+                <img src="/Other/SequenceBackendDesign.png" alt="Backend Sequence Diagram" class="rdd-image">
+                <p class="rdd-image-caption">Figure 2: Backend Sequence Diagram</p>
+            </div>
+
+            <p>
+                In the use phase the general practitioner sends symptoms that the patient
+                suffers from. The DataController receives them and then starts up a RDDeterminer which will start up a DataRetriever, DataRetriever will request data from DatabaseController. The DatabaseController then queries through the database and then casts them into IDisease and ISymptom. It then goes through the system back to the RDDeterminer which will then calculate the rare diseases and return them to the DataController. The DataController will send the results back as a JSON. The reason for the DataRetriver is to make sure that the RDDeterminer or any future implementations don't have access to admin controls.
+            </p>
+
+            <h3>Time Planning</h3>
+            <p>
+                To be able to estimate how long and where to start the programming task for
+                the backend, a diagram was needed to showcase the flow and what parts of the backend were intertwined and dependent on each other.
+            </p>
+
+            <div class="rdd-image-container">
+                <img src="/Other/BackendCreationDiagram.png" alt="Backend Creation Diagram" class="rdd-image">
+                <p class="rdd-image-caption">Figure 3: Sequence of development</p>
+            </div>
+
+            <p>
+                The figure above showcases the dependencies for the individual artifacts, while it also can be used as a guiding point to show what parts of the backend need to be developed first before other parts can be developed. For this instance, all the interfaces are required to be created first, before any other classes can be fully implemented.
+            </p>
+
+            <div class="rdd-table-container">
+                <table class="rdd-table">
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Dependency</th>
+                            <th>Estimated Time (hours)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ISymptom</td><td>-</td><td>&lt;1</td></tr>
+                        <tr><td>Region</td><td>-</td><td>&lt;1</td></tr>
+                        <tr><td>IDisease</td><td>-</td><td>&lt;1</td></tr>
+                        <tr><td>Symptom</td><td>ISymptom, Region</td><td>&lt;1</td></tr>
+                        <tr><td>Disease</td><td>IDisease</td><td>&lt;1</td></tr>
+                        <tr><td>DatabaseController</td><td>Disease, Symptom</td><td>8</td></tr>
+                        <tr><td>DataController</td><td>DatabaseController</td><td>8</td></tr>
+                        <tr><td>DataRetriever</td><td>DatabaseController</td><td>1</td></tr>
+                        <tr><td>IDeterminer</td><td>-</td><td>&lt;1</td></tr>
+                        <tr><td>RDDeterminer</td><td>IDeterminer, DataRetriever</td><td>&gt;24; &lt;48</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 id="ERDiagram">ER Diagram</h3>
+            <p>
+                The database doesn't require much. A simple functional database is more than
+                enough in this iteration. As it stands Region requires a name, Symptoms requires name, description, and a reference to regions. Disease requires name, description, a link, and a reference to symptoms.
+            </p>
+
+            <div class="rdd-image-container">
+                <img src="/Other/Database.png" alt="ER Diagram" class="rdd-image">
+                <p class="rdd-image-caption">Figure 4: ER Diagram</p>
+            </div>
+
+            <h3>Gantt Diagram</h3>
+            <div class="rdd-image-container">
+                <img src="/Other/Gantt.png" alt="Project Gantt Chart" class="rdd-image">
+                <p class="rdd-image-caption">Figure 5: Time planning for this project</p>
+            </div>
+
+            <h3 id="DataExchange">Data Exchange</h3>
+            <p>
+                This project will be using JSON compared to other similar tools such as XML, the reason for this is because the team has more experience using JSON.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">JSON Request Symptoms</span>
+                </div>
+                <pre class="rdd-pre">
+                    <code class="rdd-code rdd-code-cs">
+{
+    "Admin" : false,
+    "Write" : false,
+    "update" : true
+}
+                    </code>
+                </pre>
+            </div>
+            <p>In which it will return two lists of all diseases.</p>
+
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">JSON Return of Symptoms</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+{
+    "Symptoms" : ["SymptomName0", "SymptomName1", "SymptomName2", ...]
+}
+                    </code>
+                </pre>
+            </div>
+            <p>For sending patient data, a list of symptoms is given to the backend.</p>
+
+
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">JSON Send Patient Data</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+{
+    "Admin" : false,
+    "Write" : false,
+    "Symptoms" : ["SymptomName0", "SymptomName1", "SymptomName2", ...]
+}
+                    </code>
+                </pre>
+            </div>
+            <p>The backend will return with a list of disease objects which contains a list of symptoms and a weight value. The weight value will be between 0 and 1.</p>
+
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">JSON Return Patient Data</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+{
+    Diseases : [
+        Disease0 : {
+            Symptoms : ["SymptomName0", "SymptomName1", "SymptomName2", ...],
+            weight: 0.53,
+            href: https://....
+        },
+        Disease1 : {
+            Symptoms : ["SymptomName0", "SymptomName1", "SymptomName2", ...],
+            weight: 0.37,
+            href: https://....
+        },
+        Disease2 : {
+            Symptoms : ["SymptomName0", "SymptomName1", "SymptomName2", ...],
+            weight: 0.12,
+            href: https://....
+        }
+    ]
+}
+                    </code>
+                </pre>
+            </div>
+            <p>The href is a link to further reading about a specific disease, this exists because of F4 and therefore is added to the JSON.</p>
+
+            <h3>HTTP Responses</h3>
+            <p>
+                When sending an admin request, the website will return a JSON or a HTTP Response. It is possible for the backend to take a long time in handling the request, in the meantime a "102 processing" response will be sent. This is the only expected informational response from this program. "201 Created" will be used during an admin privileged write request, and "200 Ok" will be used in other accepted requests. "400 Bad Request" will be used if the JSON data is malformed. "403 Forbidden" for when the user attempts to use admin privileges. "404 Not found" if URL is not found, "408 Request Timeout" if the user hasn't been using the connection for some time. "418 I'm a teapot" if XML data or other formats is sent to the backend. "429 Too Many Request" if the user resends request before the last was processed. "503 Service is Unavailable" if the server is overloaded or down for maintenances, and "500 Internal Server Error" in case of server error.
+            </p>
+
+            <h3>Frontend Design</h3>
+            <div class="rdd-image-container">
+                <img src="/Other/Frontend.png" alt="Frontend design mockup" class="rdd-image">
+                <p class="rdd-image-caption">Figure 6: Frontend design</p>
+            </div>
+            <p>
+                The frontend shown is not the final version of the frontend, but a more detailed view and concept design of what the frontend could look like. For the results section, it has two categories namely Disease and likelihood. The disease name is rather self-explanatory since it will contain the disease name below, whereas the likelihood will be based on the algorithm to produce that number. The idea is that it will produce a percentage chance of it being the disease, although this number will be extremely unconfident since the topic will require a much larger dataset to create enough confidence to link symptoms and diseases together. \\
+                For the text fields, it is simply two text fields which are supposed to have drop downs to show with a search feature to show what can be inserted into the text field. You will only be able to press the “Add” button if both the text fields have valid inputs based on the JavaScript that controls it. The inputs allowed are predetermined regions and predetermined symptoms based on the regions. \\
+                The input field simply shows the accepted inputs in a list with an “X” to the side to remove an input.
+            </p>
+
+            <h3>Docker Design</h3>
+            <p>
+                As the solution has both a frontend and backend component, it is important to be able to scale the solution to account for the number of users that will use the solution. It is important to scale it as many users trying to use the same frontend and backend will lead to potentially very slow responses and the backend being very overloaded in work. For this reason, some way to scale the system could be required to help balance the load on the system.
+
+                Docker is a system that the group has previously worked with for running applications. Docker here would be perfect, as it has the features and capabilities to do scaling easily. Furthermore, it also allows for a consistent runtime as it is possible to choose what type of image to build the runtime as and to run the actual application. Docker also has portability capabilities, so it can be run on multiple different devices but still function as intended.
+
+                To run both the frontend and the backend, both the frontend and backend will have their own individual docker file. This docker file should be able to build and serve the frontend and backend respectively. To combine the action of building and running both the docker files together, a docker-compose file will be created. From there, it would be possible to build and serve the docker-compose file to both launch the frontend and backend.
+            </p>
+        </section>
+
+
+        <section class="rdd-section">
+            <h2>Implementation</h2>
+            <p>From this point, the program has been implemented, in this section, the part which the members deem as important code pieces is presented and may include a reason for why it was done in that way.</p>
+            <h3>DatabaseController</h3>
+            <p>This section will contain the implementation for the database controller. The database controllers’ task is to add data to an SQL database and retrieve the data once needed.</p>
+            <p>The DatabaseController uses SQLite, the reason for that choice is to reduce the number of servers running for the application. Upon creation, the DatabaseController will create a connection to a file which the database is in, after which it will create the tables if they do not exist.</p>
+
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+public static bool Start() {
+    if (!CreateConnection()) return false;
+    if (!CreateTables()) return false;
+    return true;
+}
+                    </code>
+                </pre>
+            </div>
+            <p>The CreateTables() method creates the tables and CreateConnection() simply opens op for a connection to the database</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+private static bool CreateConnection() {
+    if (Connection == null) {
+        try {
+            Connection = new SqliteConnection("Data Source = Database.db");
+            Connection.Open();
+            return true;
+        }
+        catch(Exception e) {
+            _ = Log.Error(e, "CreateConnection", e.Message);
+            return false;
+        }
+    }
+    else {
+        return true;
+    }
+}
+\end{lstlisting}
+                    </code>
+                </pre>
+            </div>
+            <p>The Connection Variable is static.</p>
+
+            <h3>SQL</h3>
+            <p>
+                The following code is for creating tables. Queries outside of creating tables are used alongside their methods.
+
+                The first method is for creating the table which hold the references for Diseases and Symptoms
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+    CREATE TABLE IF NOT EXISTS DiseaseSymptomsReference
+    (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    DiseaseID INTEGER NOT NULL,
+    SymptomID INTEGER NOT NULL);
+                    </code>
+                </pre>
+            </div>
+            <p>
+                Because once we are trying to add these references to one another in the code, we need to know who they belong to and as a symptom can belong to many diseases and diseases can have many symptoms. We would have to have tables to split them up so that we would have decreased repetition of data in our database.
+                Repeated data in the database would be a waste of space and would decrease the efficiency of the application.
+            </p>
+            <p>Creation of the Disease Table:</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+    CREATE TABLE IF NOT EXISTS Disease
+    (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Description TEXT,
+    Href TEXT,
+    Name TEXT);
+                    </code>
+                </pre>
+            </div>
+            <p>The Description is a short description about the disease for which the general practitioner can read. Href is for a link for further reading and Name is the name of the disease.</p>
+            <p>Creation of RegionSymptoms table:</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+    CREATE TABLE IF NOT EXISTS RegionSymptoms (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Symptom INTEGER NOT NULL,
+    Region INTEGER NOT NULL);
+                    </code>
+                </pre>
+            </div>
+            <p>The RegionSymptoms table functions the same way as DiseaseSymptomsReference table and has the same reason for its creation, RegionSymptoms table only deals with references between Symptoms and Regions.</p>
+
+            <p>Creation of Regions table:</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+    CREATE TABLE IF NOT EXISTS Regions ( +
+    ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, +
+    Name TEXT);
+                    </code>
+                </pre>
+            </div>
+            <p>Regions only need to hold their name.</p>
+
+            <p>Creation of Symptoms table:</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+    CREATE TABLE IF NOT EXISTS Symptoms (
+    ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    Region INTEGER NOT NULL,
+    Name TEXT,
+    Description TEXT");
+                    </code>
+                </pre>
+            </div>
+            <p>Region referees to RegionSymptoms. Name is the name of the symptom and Description is a further description of the symptom.</p>
+
+            <h3>Adding to the Database</h3>
+            <p>
+                In this section, we will discuss how data is added to the database.
+
+                We start at the bottom of the hierarchy and focus first on regions. As symptoms would require a reference to regions and diseases requires references to symptoms.
+                It is important to know that all the methods in this subsection are intended for administrators and not intended for clients or other users.
+                Each method in DatabaseController checks whether a connection has been created before adding or extracting from the database.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+if(!CreateConnection()) {
+    _ = Log.Error(new Exception("Could not create connection to database"), "AddRegionAsync", "");
+    return false;
+}
+                    </code>
+                </pre>
+            </div>
+            <p>The AddRegionAsync method takes in a IRegion and checks whether it already exists, if not it would add it to the database.</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = "SELECT Name FROM Regions";
+using (var reader = command.ExecuteReader()) {
+    while(await reader.ReadAsync()) {
+        if (reader.GetString(0).ToLower() == region.Name.ToLower()) {
+            _ = Log.Warning("Tried to add a Region that already exist", "AddRegionAsync", "");
+            return false;
+        }
+    }
+}
+command.CommandText = $"INSERT INTO Regions (Name) VALUES ('{region.Name}');";
+command.ExecuteNonQuery();
+return true;
+                    </code>
+                </pre>
+            </div>
+            <p>
+                The region now exists, but there does not exist any reference to any symptom, to add that we would first add a new symptom to the database through AddSymptomAsync(ISymptom).
+
+                First, we will look for Symptoms already in RegionSymptoms table to place in Symptoms tables Region.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = "SELECT Symptom FROM RegionSymptoms";//Get the reference of regions for the symptom
+int lastRefID = -1;
+bool hasData = false;
+using(var reader = command.ExecuteReader()) {
+    while(reader.Read()) {
+        hasData = true;
+        lastRefID = reader.GetInt32(0);
+    }
+    if (!hasData) {//If the database is empty
+        lastRefID= 0;
+    }
+}
+                    </code>
+                </pre>
+            </div>
+            <p>
+                We do this so the symptoms' region ID can refer to what regions it contains. So, when it looks through SymptomRegions table, it will select all which has that ID.
+                It is also how it is added to the database where that ID will be repeated for each Region in which the symptom can exist.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = $"INSERT INTO Symptoms (Region, Name, Description) VALUES ('{lastRefID}', '{symptom.Name}', '{symptom.Description}')";
+var query = command.ExecuteNonQueryAsync();
+foreach (IRegion region in symptom.Regions) {
+    await AddSympRegionReferenceAsync(lastRefID, region.ID);
+}
+                    </code>
+                </pre>
+            </div>
+
+            <p>AddSymptomReferenceAsync can be boiled down to these two lines:</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = "SELECT ID FROM Disease";
+using (var reader = command.ExecuteReader()) {
+    while(reader.Read()) {
+        disease.ID = reader.GetInt32(0) + 1;
+    }
+}
+command.CommandText = $"INSERT INTO Disease (Description, Href, Name) VALUES ('{disease.Description}', '{disease.Href}', '{disease.Name}');";
+command.ExecuteNonQuery();
+foreach (ISymptom symptom in disease.Symptoms) {
+    command.CommandText = $"INSERT INTO DiseaseSymptomsReference (DiseaseID, SymptomID) VALUES ({disease.ID}, {symptom.ID});";
+}
+command.ExecuteNonQuery();
+                    </code>
+                </pre>
+            </div>
+            <p>Continue from Getting data from the Database in Implementation section</p>
+        </section>
+    </main>
+</div>
+
+@code {
+
+}

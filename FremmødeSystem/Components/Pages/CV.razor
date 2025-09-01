@@ -1,0 +1,129 @@
+﻿@page "/CV"
+@rendermode InteractiveServer
+
+<div class="CV-container">
+    <div class="CV-header">
+        <img src="/Billede.png" alt="Profile Photo" class="CV-profile-img" />
+        <div class="CV-name-title">
+            <h1 class="CV-name">Simon dos Reis</h1>
+            <h2 class="CV-surname">Spedsbjerg</h2>
+        </div>
+    </div>
+
+    <p class="CV-quote">"An engineer allows us to do more with less"</p>
+
+    <hr class="CV-separator" />
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Summary</h3>
+        <p class="CV-paragraph">
+            Software engineer with strong expertise in REST API development and system architecture.
+            Experience with automated testing, deployment pipelines, and security measures in containerized and cloud environments.
+            Passionate about turning complex code into stable, scalable, and secure production-ready solutions.
+        </p>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Education</h3>
+        <div class="CV-education-item">
+            <span class="CV-date">2023–2025</span>
+            <div>
+                <strong>Master’s in Software Engineering</strong>,
+                <em> University of Southern Denmark</em>, Odense<br />
+                <small>Focus on scientific and unconventional, yet practical, methods in software development</small>
+            </div>
+        </div>
+        <div class="CV-education-item">
+            <span class="CV-date">2020–2023</span>
+            <div>
+                <strong>Bachelor’s Degree</strong>,
+                <em> University of Southern Denmark</em>, Odense<br />
+                <small>Learning software development and engineering methodologies</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Master’s Thesis</h3>
+        <div class="CV-thesis-item">
+            <div><strong>Title:</strong> Root-Causing and Event Identification Through Sensor Data</div>
+            <div><strong>Supervisor:</strong> Aslak Johansen</div>
+            <div><strong>Description:</strong> Design and development of a new event-based software pattern using graph structures to predict upcoming or ongoing events.</div>
+            <div><strong>Technologies:</strong> C#, MQTT, Newtonsoft, .NET Roslyn, Docker, Machine Learning</div>
+        </div>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Bachelor’s Thesis</h3>
+        <div class="CV-thesis-item">
+            <div><strong>Title:</strong> Development of a tool for prediction of rare diseases based on patient symptoms</div>
+            <div><strong>Description:</strong> Development of a decision support tool for general practitioners to assess referral needs to specialists.</div>
+            <div><strong>Technologies:</strong> C#, ASP.NET, SQL, Docker, React Native, Newtonsoft for REST implementation</div>
+        </div>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Notable Personal Projects</h3>
+        <div>
+            <p><strong>Rare Disease Predictor:</strong> Continued development of the bachelor project with a focus on reducing technical debt. Refactored API endpoints to HTTP standards, migrated from SQLite to MySQL, and implemented security systems.</p>
+            <p><strong>Box Grabbing for Robotic Arms:</strong> Developed AI for determining optimal grasping points. Built the AI tool, API endpoints, and command receiver for the robot in C++ for performance.</p>
+        </div>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Languages</h3>
+        <ul class="CV-languages">
+            <li><strong>Danish</strong>: Native</li>
+            <li><strong>English</strong>: Fluent</li>
+            <li><strong>Portuguese</strong>: Advanced beginner <em>– Completed courses and practiced for over 2 years</em></li>
+        </ul>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Expertise</h3>
+        <ul class="CV-expertise">
+            <li><strong>C# / .NET</strong>: Wide range of topics including ML and REST API development</li>
+            <li><strong>Docker</strong>: Containerization and automatic image rollout in pipelines</li>
+            <li><strong>SQL</strong>: Experience with MySQL, PostgreSQL, SQLite</li>
+            <li><strong>CI/CD</strong>: GitHub Actions, Docker Hub for delivery</li>
+            <li><strong>Reliability</strong>: System optimization and reliability features</li>
+            <li><strong>C++</strong>: Performance optimization and systems programming</li>
+        </ul>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Interests</h3>
+        <ul class="CV-interests">
+            <li><strong>Literature</strong>: Reading</li>
+            <li><strong>3D Modeling</strong></li>
+            <li><strong>Music</strong>: Primarily guitar</li>
+        </ul>
+    </section>
+
+    <section class="CV-section">
+        <h3 class="CV-section-title">Previous Job Experience</h3>
+        <ul class="CV-interests">
+            <li>Cashier in Bilka for more than 2 years</li>
+        </ul>
+    </section>
+</div>
+
+
+
+@inject IJSRuntime JS
+
+<div class="CV-download-section" id="cv-download-section">
+    <button class="CV-download-button fly-in" @onclick="DownloadPDF">Download PDF</button>
+</div>
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) {
+            await JS.InvokeVoidAsync("observeFlyIn");
+        }
+    }
+
+    private async Task DownloadPDF() {
+        await JS.InvokeVoidAsync("downloadCVAsPDF");
+    }
+}

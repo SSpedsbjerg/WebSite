@@ -1,0 +1,71 @@
+﻿@page "/DKD/Fremmøde"
+@rendermode InteractiveServer
+@using FremmødeSystem.Structs
+
+<h3>Skriv ny person ind</h3>
+
+
+
+<EditForm Model="@signupForm" OnValidSubmit="HandleValidSubmit" FormName="SignupForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-2">
+        <label>Rang:</label>
+        <InputText @bind-Value ="signupForm.Rang" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Navn:</label>
+        <InputText @bind-Value ="signupForm.Navn" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Joined:</label>
+        <InputDate @bind-Value ="signupForm.Joined" class="form-control" />
+        <small></small>
+    </div>
+
+    <div class="mb-2">
+        <label>Formular:</label>
+        <InputText @bind-Value ="signupForm.Formular" class="form-control" />
+        <small>Medmindre du ved hvad du laver (aka kun Boje og Spedsbjerg), så lad denne værer</small>
+    </div>
+
+    <div class="mb-2">
+        <label>Status:</label>
+        <InputText @bind-Value ="signupForm.Status" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Fremmøde:</label>
+        <InputNumber @bind-Value ="signupForm.Fremmøde" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Tilføj</button>
+</EditForm>
+
+
+@code {
+    private FremmødeSystem.Structs.Signup signupForm = new();
+    private const string sheetName = "Holdfast";
+
+    private async Task HandleValidSubmit() {
+        Console.WriteLine($"Rang: {signupForm.Rang}");
+        Console.WriteLine($"Navn: {signupForm.Navn}");
+        Console.WriteLine($"Joined: {signupForm.Joined:dd/MM/yyyy}");
+        Console.WriteLine($"Formular: {signupForm.Formular}");
+        Console.WriteLine($"Status: {signupForm.Status}");
+        Console.WriteLine($"Fremmøde: {signupForm.Fremmøde}");
+        try {
+            List<IList<object>> values = new List<IList<object>>();
+            values.Add(new List<object> { signupForm.Rang, signupForm.Navn, signupForm.Joined.ToString("dd/MM/yyyy"), signupForm.Formular, signupForm.Status, signupForm.Fremmøde });
+            bool success = SheetController.Post(values, signupForm.GetRowNumber(), sheetName);
+            if (success) Console.WriteLine("Updated");
+            else Console.WriteLine("Failed To Update");
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}

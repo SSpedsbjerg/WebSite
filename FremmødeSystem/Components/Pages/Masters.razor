@@ -1,0 +1,940 @@
+﻿@page "/Projects/Masters"
+@rendermode InteractiveServer
+
+
+<div class="masters-project-background">
+    <div class="masters-glow-ring"></div> <!-- 🔹 ring lives here -->
+    <div class="masters-bg-effects"></div> <!-- Visual layer -->
+
+    <div class="masters-project-content">
+        <h1>Root-Causing and Event Identification Through Sensor Data</h1>
+        <p>First I would like thank my advisor for this project, Aslak Johansen.</p>
+        <p>Then also Rasmus Meldgaard for proof reading the article.</p>
+        <p>This page attempts to formulate the project in a more developer focused perspective, meaning more indepth with code, less scientific than the article. The article is available below if you prefer a more scientific perspective and indepth view on the project.</p>
+        <p>
+            This project began as a strategy to leverage graph structures for decision-making but has evolved into the development of a novel software pattern, REPS, with broader applicability and greater value than originally envisioned. While still grounded in the use of graph structures, the focus has shifted to exploring how best to design this pattern.
+
+            REPS introduces a structured framework based on rules and relationships between nodes to enable decision-making. Rather than benchmarking against existing solutions, this work emphasizes design exploration, with performance optimization being outside its current scope.
+
+            The article follows the chronological development of the project. After reviewing related work, the focus transitions from comparing REPS to existing predictive systems to evaluating it as a distinct, interpretable pattern.
+
+            Modern machine learning systems often lack transparency, making it difficult for developers to understand or verify their outputs. REPS addresses this challenge by offering a graph-based, real-time analysis tool that integrates with state-of-the-art ML models while remaining developer-comprehensible.
+
+            REPS processes sensor or event data through "event nodes," each producing results that can feed into downstream nodes. This architecture supports real-time decision-making across components while maintaining interpretability.
+
+            The project ultimately seeks to identify viable use cases for REPS and assess its potential benefits and limitations.
+        </p>
+        <p>You can download the full report here:</p>
+        <button @onclick="DownloadPDF">Download PDF</button>
+    </div>
+
+    <section class="masters-project-section">
+        <h2>Context</h2>
+        <p>
+            For this project, some definitions is set to achieve best understanding of the
+            project
+        </p>
+        <h3>Sensor Node:</h3><p>an egde node where sensor data is received</p>
+        <h3>Event Node:</h3><p>a node containing a model which it uses to determine an ongoing event.</p>
+        <h3>Trigger:</h3><p>
+            An event is triggered when the change of state occurs. When
+            an event is triggered, it emits a value indicating its state, this can varies
+            between a boolean, triggered or stable, or it can vary in severity
+        </p>
+        <h3>Simple Model:</h3><p>
+            A model which is defined by a function written some
+            form of programming language, in this project, C# is used. It is used to
+            interpret data in scenarios which a custom set of instructions is needed.
+        </p>
+        <br/>
+        <p>
+            The REPS’ nodes includes event nodes and sensor nodes, where event nodes
+            has a model. The model can be a ML model or a specified logical statement.
+            Event nodes job is to determine whether an event is ongoing or is going to happen. They give an output to help other event nodes further down in a event
+            graph. Sensor nodes job is to retrieve data from outside the system.
+        </p>
+        <embed src="/Other/EventNodeModel.pdf" />
+        <br />
+    </section>
+
+    <section class="masters-project-section">
+        <h2>Analysis</h2>
+        <p>
+            To determine the optimal design based on insights from the research phase,
+            several analytical methods are applied. First, features are separated into those
+            likely to provide value to the end user and those considered less relevant. This
+            is done through brainstorming, as other methods are less effective in producing
+            satisfactory results according to the developers experience.
+        </p>
+        <h3>Potential Features</h3>
+        <b>Modability during run-time</b><p>
+            The idea here being that a user would never
+            need to have any downtime even when they only run one instance of REPS.
+            This would lean towards a component based design of REPS, but could
+            be implemented through other means.
+        </p>
+        <b>Adding or removing nodes during run-time</b><p>
+            This comes with the same
+            general idea which could reduce down time when using only one instance.
+        </p>
+        <b>Hybridize with other predictive models</b><p>
+            Someone could insert a ML model
+            while still keeping memory usage low, this would allow REPS to extremely
+            complex in is design and cover a large use case. It can be imagined that
+            REPS already is going to require a large usage of memory, therefore models
+            which is memory demanding such as K’s Nearest Neighbour (KNN) will
+            be unusable in a REPS.
+        </p>
+        <h3>Requirements</h3>
+        <p>
+            A MoSCoW analysis is conducted to determine the prioritisation of requirements. The outcome of this analysis informs the selection of technologies used
+            in the project, as choices are guided by each technology’s ability to support the
+            identified requirements.
+            A clear project scope is defined early to maximize the value of collected experience and data from this project. Therefore a MoSCoW analysis is used to
+            prioritize features.
+        </p>
+        <div class="masters-table-section">
+            <h3>Functional Requirements</h3>
+            <div class="masters-table-wrapper">
+                <table class="masters-requirements-table">
+                    <thead>
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Requirement</th>
+                            <th>Prioritization Level</th>
+                            <th>Description</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FR0</td>
+                            <td>Individual process in each 'Event Node'</td>
+                            <td>Must have</td>
+                            <td>An 'Event Node' is the main process for making predictions.</td>
+                            <td>These processes are essential for making predictions.</td>
+                        </tr>
+                        <tr>
+                            <td>FR1</td>
+                            <td>Ability to communicate with external services not part of REPS</td>
+                            <td>Must have</td>
+                            <td>External systems must be able to receive values from REPS to make decisions based on REPS' observations.</td>
+                            <td>Without this, REPS serves no purpose.</td>
+                        </tr>
+                        <tr>
+                            <td>FR2</td>
+                            <td>Easily add new 'Event Nodes'</td>
+                            <td>Could have</td>
+                            <td>Using XML, JSON, or another format, new nodes could be added to the REPS.</td>
+                            <td>May accelerate testing, though not required for system functionality.</td>
+                        </tr>
+                        <tr>
+                            <td>FR3</td>
+                            <td>Quickly initialise REPS using a configuration file</td>
+                            <td>Could have</td>
+                            <td>Allows quicker deployment and enables sharing of REPS configurations.</td>
+                            <td>Could speed up testing, but not required for system functionality.</td>
+                        </tr>
+                        <tr>
+                            <td>FR4</td>
+                            <td>Support for ML models in 'Event Nodes'</td>
+                            <td>Should have</td>
+                            <td>Would expand REPS' use cases, enabling integration of tailored models.</td>
+                            <td>Highly useful for this project but not essential for viability.</td>
+                        </tr>
+                        <tr>
+                            <td>FR5</td>
+                            <td>Event Detection Capability</td>
+                            <td>Must have</td>
+                            <td>Detects relevant events occurring within the system.</td>
+                            <td>Core functionality of the system.</td>
+                        </tr>
+                        <tr>
+                            <td>FR6</td>
+                            <td>Graphical user-interface</td>
+                            <td>Won't have</td>
+                            <td>A user interface would simplify REPS setup for developers.</td>
+                            <td>Deemed too time-consuming and not essential for evaluation.</td>
+                        </tr>
+                        <tr>
+                            <td>FR7</td>
+                            <td>Automatic REPS creation</td>
+                            <td>Won't have</td>
+                            <td>Could enable REPS generation from documentation.</td>
+                            <td>Beyond scope; considered a separate research topic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p> Wont have means I do not plan to implement such feature at the moment, but is included as this could have value for future work.</p>
+        <div class="masters-table-section">
+            <h3>Non-Functional Requirements</h3>
+            <div class="masters-table-wrapper">
+                <table class="masters-requirements-table">
+                    <thead>
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Requirement</th>
+                            <th>Prioritization Level</th>
+                            <th>Description</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NF0</td>
+                            <td>Should not have a high complexity</td>
+                            <td>Should have</td>
+                            <td>Complexity refers to how easily a developer can understand the system.</td>
+                            <td>A key advantage is that the developer should be able to understand how a decision is made.</td>
+                        </tr>
+                        <tr>
+                            <td>NF1</td>
+                            <td>Restricted Memory usage</td>
+                            <td>Could have</td>
+                            <td>There is a risk of high resource usage.</td>
+                            <td>The system may suffer from memory issues on lower-end or smaller computers.</td>
+                        </tr>
+                        <tr>
+                            <td>NF2</td>
+                            <td>Easy to communicate with</td>
+                            <td>Should have</td>
+                            <td>It should be easy to retrieve necessary values from REPS.</td>
+                            <td>If this is not fulfilled, using REPS would become difficult, significantly reducing its usefulness.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h3>Technology Choices</h3>
+        <p>Based on these requirements, the following technologies, frameworks, and patterns are considered necessary:</p>
+        <b>Publish-Subscribe pattern, MQTT (FR1, FR2, FR3, NF2):</b><p>
+            The publish-subscribe pattern best suits the communication needs. Its
+            modifiability and adaptability align well with the communication requirements (FR1) while supporting easy extension (FR2 & FR3). Message
+            Queuing Telemetry Transport (MQTT) supports all necessary features
+            and is therefore picked due to its simplicity and light weight.
+        </p>
+        <b>JSON interpreter for saving (FR2, FR3):</b><p>
+            A relational database does not suit REPS’s structure. JavaScript Object
+            Notation (JSON) or XML provide the flexibility required. There is no need
+            for the performance benefits of a relational database. JSON is preferred,
+            as I have more experience implementing it, whereas XML is less familiar.
+            AVRO will not be used as it will require more development time than
+            JSON.
+        </p>
+        <b>C#:</b><p>
+            I have the most experience with C#. While it may be slower than languages like C/C++, it is sufficiently fast for this project. Its objectoriented nature suits REPS well. A drawback is the limited availability of
+            ML libraries compared to Python, which may slow the implementation of
+            FR4 but will enable faster development of other features.
+        </p>
+        <b>Roslyn:</b><p>
+            Roslyn is a .NET compiler platform which allows for turning the C#
+            compiler into a programmable platform. Meaning I can compile code
+            during run time. As anything compiled during runtime, it will require
+            more computational power, an increase in CPU and Memory usages is
+            expected. Roslyn allows for the simplest form of making determinations
+            in a node and is therefore included even though it may have Memory usage
+            problems.
+        </p>
+        <b>ML models (FR4):</b><p>
+            A simple model will use Roslyn to make determinations, but as the related
+            work determined, ML models frequently used to make determinations and supporting that will most likely bring the highest value.
+            Through this project, the following ML models in same following order
+            will be implemented. SVM, easy to implement and is the second most
+            used model in the related work. Random Forest (RF) due to it being very
+            different from SVM, allowing to determine the range of models which can
+            be used in REPS. Neural Networks requires more implementation than
+            some of the other 2, while it is the most used according to the related
+            work, it also requires more work, and as the implementation of models is
+            not the focus of this project, it can be put in the last spot in the queue
+            for implementation.
+        </p>
+        <br />
+        <embed src="/Other/AnalysisClassDiagramPDF.pdf" />
+        <p>
+            Based on the diagrams in Figure 4, RabbitMQ will be used for MQTT as
+            it meets all project requirements and supports C# implementation. It offers
+            classic MQTT features and queue prioritisation, which may be essential in crisis situations. The number of priority levels should be limited, as increasing
+            them demands more CPU resources. Additionally, messages set to expire might
+            remain longer than expected, since RabbitMQ expires messages from the head
+            of the queue. However, this should not pose a problem provided the end user
+            does not send excessive messages.
+            In C#, the output must be defined as the object type to allow broad usage of
+            different types. While the dynamic type is an alternative, it introduces runtime
+            casting, which increases the risk of errors. The var keyword is not suitable, as
+            it resolves types at compile time. By using object, I must explicitly define a
+            set of permitted casting types. This reduces flexibility but significantly lowers
+            the risk of runtime errors.
+            I will use C#’s Roslyn to interpret functions at runtime. This enables full
+            customisation of logic, including mathematical operations and conditional statements.
+            For JSON parsing, I will be using Newtonsoft, a C# framework for interpreting JSON. This choice is based on its ease of use, extensive documentation,
+            and the fact that it is the most downloaded NuGet package[1], which suggests
+            that if any issues arise, solutions are likely to be found on Stack Overflow or
+            17
+            similar platforms.
+            The target of the project is to have and be able to create graphs, a worry
+            then arrives that the implementation is has a tree like structure that is pretends
+            to be a graph, i.e. that it is not possible to create circular dependencies but
+            all nodes descend from a set of root sensor nodes. Therefore there is a need
+            to remove dependencies from other nodes, that even though the parent node
+            is not finished processing, the child node will just have to use the old output
+            value. This ensures that a circular dependency does not cause an infinite loop
+            and actually allows for it to be a graph.
+        </p>
+    </section>
+
+    <section class="masters-project-section">
+        <h2>Design</h2>
+        <p>
+            Based on the analysis, a set of technology choices
+            could be stated which is needed to achieve the requirements,
+            and on the technology choices, a more precise design is made to align with the
+            technology.
+        </p>
+        <img src="/other/designanalysisdiagram.png" />
+        <p>
+            As the project furthers and new iterations of the project is completed, the
+            class diagram will be updated with the final diagram, this diagram
+            is just to show the size of the final program when more of the planned features
+            has been developed, as it is too bige to properly represent on paper. It mostly
+            remains in the same theme as figure 5: The REPS is split up in 2 parts, the
+            system itself and then a GUI.
+        </p>
+        <img src="/other/sequencediagram.png" />
+        <h3>Logical Insurance</h3><p>
+            To ensure the correctness of the system’s logic, UPPAAL, a model-checking tool
+            is used to validate the system’s logic before implementation. This reduces the
+            risk of introducing logical errors early in development.
+        </p>
+    </section>
+
+    <section class="masters-project-section">
+        <h2>REPS Implementation</h2>
+        <p>
+            REPS begins by loading a configuration file in JSON format. JSON was chosen
+            due to its ease of modification during testing, as well as its compatibility with
+            other systems such as the GUI. The configuration defines the various nodes in
+            the system, with each node represented by a struct containing all relevant data.
+            A sensor node receives input either from a physical sensor or via another
+            communication method. It was determined that the nodes should follow a publish–subscribe pattern, as this suits their dynamic nature. RabbitMQ was used
+            for all communication, primarily due to its support for priority queuing.
+            An event node retrieves data from sensor nodes and applies its model to the
+            input. The model’s output is then made available to other nodes. Each event
+            node also includes a trigger function, which is used to assess the severity of the
+            ongoing event.
+            Each node connects to the MQTT broker using a specific topic, which it
+            either publishes to or subscribes to for receiving data. An event node publishes
+            to the broker based on the severity of the event and user-defined preferences.
+        </p>
+        <embed src="/Other/Final.pdf" />
+        <h3>Models</h3>
+        <p>
+            Simple models use C# Roslyn’s compiler to compile code at runtime, allowing
+            for custom functions to make determinations. By using Roslyn, full customisation is possible without the need to implement a separate interpreter. However,
+            this increases complexity for the user, as they must write functions using C#
+            syntax, and it introduces a risk of arbitrary code execution.
+            Each Event Node contains a model which it uses to determine an output.
+            The complexity of the model can vary; a simple model, can take a mathematical
+            function written in C# syntax and generate an output based on it.
+            The following models have been implemented based on related work
+        </p>
+        <b>SimpleModel</b><p>
+            A model intended for users to define their own logic using a
+            simple expression. While it is Turing complete, it is not suited for complex
+            algorithms due to higher memory consumption.
+        </p>
+        <b>TimedModel</b><p>
+            Used to evaluate actions over time. One use case is calculating the average number of new unique entries within a time window.
+            It acts more as a supporting model to help other models making their
+            determinations.
+        </p>
+        <b>AdaptivModel</b><p>Adjusts its trigger threshold dynamically to improve prediction accuracy. Useful when the optimal threshold is unknown or unreliable.</p>
+        <b>MachineLearningModel</b><p>
+            An abstract class containing shared methods for
+            all ML model implementations.
+        </p>
+        <b>SupportVectorMachineModel</b><p>A model that implements the Support Vector Machine.</p>
+        <b>RandomForestModel</b><p>A model that implements the Random Forest.</p>
+        <section>
+            <h3>SimpleMode.cs</h3>
+            <pre class="masters-code-block"><code>
+protected virtual async Task&lt;Func&lt;object[], object?&gt;&gt; CompileFunctionAsync(string function, string[] parameters) {
+    string guid = Guid.NewGuid().ToString("N");
+    string code = $&#64;"
+    using System;
+
+    public class DynamicFunction_{guid} {{
+            public static {REPS.Convert.GetStringType(type)} Compute_{guid}({string.Join(", ", parameters.Select(p => $"object {p}"))}) {{
+                    {function};
+            }}
+    }}";
+    MethodInfo method = MethodFunctionConstructor(code, guid);
+    return args => {
+        object[] argumentArray = args.Select(x => (object)x).ToArray();
+        object? invokation = null;
+        try {
+            invokation = method.Invoke(null, argumentArray);
+        }
+        catch(Exception e) {
+            ...
+        }
+        return invokation;
+    };
+}
+            </code></pre>
+        </section>
+        <p>
+            The method must be constructed each time it is processed. Since the model needs to be dynamic, accepting any code, input, and output, it requires compilation every time. This is a requirement of the Roslyn framework. Compiling at runtime also enables changing the model dynamically.
+
+            An Adaptive model functions similarly to the Simple model, but it maintains an equilibrium value which it updates during runtime.
+        </p>
+        <section>
+            <h3>AdaptivModel.cs</h3>
+        <pre class="masters-code-block"><code>
+protected virtual void UpdateEqulibrium&lt;T&gt;((object, TimeOnly)[] values) {
+	if(typeof(T) == typeof(int)) {
+		int cutOffPoint = (int)(this.values.Count * updatePercentage);
+		TimeOnly timeCutoff = this.values[cutOffPoint].Item2;
+		(object, TimeOnly)[]? toBeReplaced = ((object, TimeOnly)[])this.values.Where(data => data.Item2 > timeCutoff);
+		foreach((object, TimeOnly) value in this.values) {
+			if(toBeReplaced.Contains(value)) {
+				this.values.Remove(value);
+			}
+		}
+		this.values.AddRange(values);
+		this.triggerLowerEqulibrium = this.values[(int)(this.values.Count * QuantileCutoff)].Item1;
+		this.triggerUpperEqulibrium = this.values[(int)(this.values.Count * (1 - QuantileCutoff))].Item1;
+	}
+	...
+}
+        </code></pre>
+        </section>
+        <p>
+            It updates the trigger limit, which determines when an event is considered triggered.
+            A Machine Learning (ML) model is an abstract class and is also regarded as
+            an adaptive model. However, in the current implementation, it does not utilise
+            the inherited functionality. The concept is that ML models can also adapt as
+            new data becomes available. The ML model defines two methods which are not
+            22
+            implemented as it is expected to be implemented in class’ which inherent from
+            this.
+            ML models cover a wider range of use cases and are easier to implement
+            from a user’s perspective. Both SVM and RF have been implemented to test
+            their viability. The SVM model uses Microsoft.ML, which provides much of the
+            implementation needed for different models. The SVM requires only a path to
+            the training data; the data is then used to train the model.
+        </p>
+        <section>
+            <h3>SupportVectorMachineModel.cs</h3>
+            <pre class="masters-code-block">
+            <code>
+            public override object Predict(object data) {
+    Prediction prediction = predictionEngine.Predict((Data)data);
+    Console.WriteLine($"Prediction: {prediction.PredictedLabel} | Score: {prediction.Score}");
+    lastPrediction = prediction.PredictedLabel;
+    return prediction.Score;
+}
+
+public override bool Train(object[] inputData) {
+    try {
+        List&lt;Data&gt; trainingData = new List&lt;Data&gt;();
+        foreach(object input in inputData) {
+            trainingData.Add((Data)input);
+        }
+        var vectorSize = trainingData[0].Features.Length;
+        Console.WriteLine(trainingData[0].Features.GetType());
+        trainingData = trainingData.Where(x => x.Features.Length == vectorSize).ToList();
+        IDataView? data = context.Data.LoadFromEnumerable(trainingData);
+
+        var pipeline = context.Transforms.NormalizeMinMax("Features").Append(context.Transforms.NormalizeMinMax("Features")).Append(context.BinaryClassification.Trainers.LdSvm(labelColumnName: "Label", featureColumnName: "Features"));
+
+        Console.WriteLine($"Training...");
+        this.model = pipeline.Fit(data);
+        this.predictionEngine = context.Model.CreatePredictionEngine&lt;Data, Prediction&gt;(model);
+        return true;
+    }
+...
+}
+        </code></pre>
+        </section>
+        <p>
+            The models use the score to make a prediction; the higher the confidence of the
+            model in its outcome, the greater the severity assigned.
+            RF follows very similar setup except you can need to define number of trees.
+            The models follows the class digram defined in figure 8
+        </p>
+        <h3>Trigger</h3>
+        <p>
+            A trigger is implemented similarly to a simple models code compilation; however,
+            it is more limited in what it can return. This restriction exists because such
+            flexibility is unnecessary and it reduces the risk of arbitrary code execution.
+        </p>
+        <section>
+            <h3>SimpleModel.cs compile Trigger</h3>
+            <pre class="masters-code-block">
+                <code>
+protected virtual MethodInfo MethodTriggerConstructor(string code, string guid) {
+    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
+    MetadataReference[] references = {
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
+            };
+    CSharpCompilation compilation = CSharpCompilation.Create(
+        $"DynamicTrigger_{guid}",
+        new[] { syntaxTree },
+        references,
+        new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+        );
+    using var ms = new System.IO.MemoryStream();
+    var result = compilation.Emit(ms);
+
+    if(!result.Success) {
+        throw new Exception($"Compilation failed for the trigger!\n{code}\n{result.Diagnostics[0]}");
+    }
+
+    ms.Seek(0, System.IO.SeekOrigin.Begin);
+    Assembly assembly = Assembly.Load(ms.ToArray());
+    Type type = assembly.GetType($"DynamicTrigger_{guid}");
+    MethodInfo method = type.GetMethod($"Compute_{guid}");
+    return method;
+}
+
+//unlike the other function compiler, this must return an int which can be converted to the severity level
+#pragma warning disable CS1998 //must be async
+protected virtual async Task&lt;Func&lt;object[], object?&gt;&gt; CompileTrigger(string function) {
+    string guid = Guid.NewGuid().ToString("N");
+    string code = $&#64;"
+        using System;           
+
+        public class DynamicTrigger_{guid} {{
+            public static int Compute_{guid}(object output){{
+                {function}
+                }}
+            }}
+        ";
+    return args => MethodTriggerConstructor(code, guid).Invoke(null, args);
+}
+#pragma warning restore CS1998
+        </code>
+        </pre>
+        </section>
+        <h3>JSON Reading</h3>
+        <p>The JSON Interpreter's role is to read a configuration file that an end user can modify to launch the REPS. The intention is to keep the user’s implementation of a REPS system simple. In this sense, the JSON reading acts as a DSL, where maintaining low complexity is essential for this project. Therefore, the JSON reader should include only a limited number of keywords.</p>
+        <section>
+            <h3>ReadingSensorConfig</h3>
+            <pre class="masters-code-block">
+                <code>
+private List&lt;SensorConfig&gt; ReadSensorConfigs(JObject config) {
+	...
+	foreach(JObject sensorNode in sensorNodes) {
+		try {
+			SensorConfig sensorConfig = new SensorConfig();
+			sensorConfig.id = (int)sensorNode.GetValue("ID");
+			sensorConfig.host = sensorNode.GetValue("Host").ToString();
+			sensorConfig.name = sensorNode.GetValue("Name").ToString();
+			sensorConfig.type = DetermineSupportedType(sensorNode);
+			if(sensorConfig.type == SupportedTypes.STRING) {
+				...
+			}
+			sensorConfig.topic = sensorNode.GetValue("Topic").ToString();
+			sensorConfig.routingKey = sensorNode.GetValue("RoutingKey").ToString();
+			sensorConfigs.Add(sensorConfig);
+		}
+		...
+	}
+	return sensorConfigs;
+}
+                </code>
+            </pre>
+        </section>
+        <p>Reading configuration files is implemented as shown in Code Snippet \ref{lst:readingSensorConfig}, where the code interprets specific values and stores them in a struct. This struct is then used to instantiate the models.</p>
+        <section>
+            <h3>SensorConfig</h3>
+            <pre class="masters-code-block">
+                <code>
+public struct SensorConfig {
+    public int id;
+    public string name;
+    public string host;
+    public string routingKey;
+    public string topic;
+    public SupportedTypes type;
+    public bool? isUsername;
+}
+                </code>
+            </pre>
+        </section>
+        <p>
+            Implementing all of the configurations in the JSON reader, from which we
+            can determine the amount of keywords needed implement the current solution.
+            There is a total of 30 keywords.
+        </p>
+        <p>
+            With the current implementation of the JSON reader, a user can implement
+            REPS. For example, a simple model that takes two sensors and adds their values
+            can be defined as shown:
+        </p>
+        <section>
+            <pre class="masters-code-block">
+                <code>
+{
+    "BrokerInfo": {
+        "NotificationBroker": "localhost",
+        "NotificationTopic": "notify",
+        "ReportBroker": "localhost"
+    },
+    "SensorNodes": [
+    {
+        "ID": 0,
+        "Name": "first",
+        "SupportedType": "INT",
+        "Host": "localhost",
+        "RoutingKey": 0,
+        "Topic": "first"
+    },
+    {
+        "ID": 1,
+        "Name": "second",
+        "SupportedType": "INT",
+        "Host": "localhost",
+        "RoutingKey": 0,
+        "Topic": "second"
+    }
+    ],
+    "EventNodes": [
+    {
+        "ID": 0,
+        "Name": "Name",
+        "SensorNodes": [ 0, 1 ],
+        "EventNodes": [],
+        "ReportTopic": "EventOutput",
+        "SupportedType": "INT",
+        "Host": "localhost",
+        "RoutingKey" :  0,
+        "Model": {
+            "ID": 0,
+            "Type": "Simple",
+            "Name": "Name",
+            "SupportedType": "INT",
+            "Function": "a+b",
+            "Parameters": [ "a", "b" ]
+        }
+    }
+]
+                </code>
+            </pre>
+        </section>
+        <p>A more realistic use of REPS is shown in the following Code Snippet. It implements one sensor and three events to determine the average time between bot creations, detect a single bot creation event, and identify an attack involving multiple new bot creations.</p>
+        <section>
+            <pre class="masters-code-block">
+                <code>
+{
+    "BrokerInfo": {
+        "NotificationBroker": "localhost",
+        "NotificationTopic": "notify",
+        "ReportBroker": "localhost"
+    },	
+    "SensorNodes": [
+        {
+            "ID": 0,
+            "Name": "AccountCreationSensor",
+            "SupportedType": "STRING",
+            "Host": "localhost",
+            "RoutingKey": 0,
+            "Topic": "AccountCreationActivity"
+        }
+    ],
+    "EventNodes": [
+        {
+            "ID": 0,
+            "Name": "AccountCreationTimerEvent",
+            "SensorNodes": [ 0 ],
+            "EventNodes": [],
+            "ReportTopic": "BotDetection",
+            "SupportedType": "FLOAT",
+            "Host": "localhost",
+            "RoutingKey": 0,
+            "Model": {
+                "ID": 0,
+                "Type": "timed",
+                "DebugMode": false,
+                "Name": "AccountCreationTimerModel",
+                "SupportedType": "FLOAT",
+                "TimedTrigger": 0.5,
+                "Parameters": ["a"]
+            }
+        },
+        {
+            "ID": 1,
+            "Name": "BotDeterminerEvent",
+            "SensorNodes": [ 2 ],
+            "EventNodes": [],
+            "ReportTopic": "BotDetection",
+            "SupportedType": "INT",
+            "Host": "localhost",
+            "RoutingKey": 0,
+            "Model": {
+                "ID": 1,
+                "Type": "svm",
+                "DebugMode": false,
+                "Name": "BotDeterminerModel",
+                "SupportedType": "INT",
+                "TrainingData": "C:/../TrainingsData.csv"
+        }
+    },
+    {
+        "ID": 2,
+        "Name": "BotCreationAttackDeterminerEvent",
+        "SensorNodes": [],
+        "EventNodes": [ 0, 1 ],
+        "ReportTopic": "BotCreationAttackDeterminer",
+        "SupportedType": "INT",
+        "Host": "localhost",
+        "RoutingKey": 0,
+        "Model": {
+            "ID": 1,
+            "Type": "simple",
+            "DebugMode": false,
+            "Name": "BotDeterminerModel",
+            "SupportedType": "BOOLEAN",
+            "Function": "return ((float)a > 0f && (float)b > 0.5)",
+            "Parameters": [ "a", "b" ],
+            "TriggerFunction": "if((bool)output) return 1; else return 0;"
+            }
+        }
+    ]
+}
+                </code>
+            </pre>
+        </section>
+        <h2>Nodes</h2>
+        Any kind of nodes implements an INode
+        <h3>INode.cs</h3>
+        <section>
+            <pre class="masters-code-block">
+                <code>
+namespace REPS.Interfaces {
+    public interface INode {
+        object Output {
+            get;
+            set;
+        }
+
+        public Task Process();
+
+    }
+}
+                </code>
+            </pre>
+        </section>
+        The ‘Output’ is where other nodes can access the value determined by the process. The process returns a task, allowing it to run in parallel with other tasks.
+        <section>
+            <h3>Program.cs</h3>
+            <pre class="masters-code-block">
+                <code>
+foreach(INode node in nodes) {
+    if(node is EventNode) {
+        tasks.Add(node.Process());
+    }
+}
+                </code>
+            </pre>
+        </section>
+        <h3>RabbitMQ</h3>
+        The RabbitMQ implementation is divided into two classes: the Client, which manages all connections with the broker, and the Connection class, which handles direct communication with the broker.
+
+        The Client has a simple implementation, as the RabbitMQ library already manages most of the background connections.
+        <section>
+            <h3>Client.cs</h3>
+            <pre class="masters-code-block">
+                <code>
+namespace REPS.Connections {
+    public class Client {
+		private string hostname;
+		private ConnectionFactory factory;
+		private List&lt;Connection&gt; connections;
+		private int id;
+		public Client(string hostname) {
+			this.hostname = hostname;
+			this.factory = new ConnectionFactory { HostName = this.hostname };
+			id = 0;
+			connections = new List&lt;Connection&gt;();
+		}
+		
+		public string Hostname { get { return hostname; } }
+		
+		public async Task&lt;Connection&gt; CreateConnectionAsync(string[] topics, string routingKey) {
+			Connection connection = new Connection(id, topics, routingKey);
+			id++;
+			await connection.CreateConnectionAsync(this.factory);
+			connections.Add(connection);
+			return connection;
+		}	
+	}
+}
+                </code>
+            </pre>
+        </section>
+        Once a client has been instantiated, nodes can establish connections. The primary methods used are Subscribe and SendMessage.
+
+        <section>
+            <h3>Connection.cs</h3>
+            <pre class="masters-code-block">
+                <code>
+public async void Subscribe(string topic) {
+    QueueDeclareOk queueDeclareResult = null;
+    try {
+        queueDeclareResult = await channel.QueueDeclareAsync();
+    }
+    catch(NullReferenceException ex) {
+        ...
+        return;
+    }
+    string queueName = queueDeclareResult.QueueName;
+    await channel.QueueBindAsync(queue: queueName, exchange: topic, routingKey: routingKey);
+    AsyncEventingBasicConsumer consumer = new AsyncEventingBasicConsumer(channel);
+    consumer.ReceivedAsync += (model, ea) => {
+        byte[] body = ea.Body.ToArray();
+        string message = Encoding.UTF8.GetString(body);
+        this.returnMessage = message;
+        return Task.CompletedTask;
+    };
+    await channel.BasicConsumeAsync(queue: queueName, autoAck: true, consumer: consumer);
+}
+                </code>
+            </pre>
+        </section>
+        With this implementation sensor nodes can receive data from the broker.
+        <section>
+            <h3>SensorNode.cs</h3>
+            <pre class="masters-code-block">
+                <code>
+private async Task&lt;bool&gt; initAsync() {
+	connection = connectionTask.Result;
+	connectionTask.Dispose();
+	connection.Subscribe(topic);
+	return true;
+}
+                </code>
+            </pre>
+        </section>
+        And it is possible for event nodes to send their determination to the broker.
+        <section>
+            <h3>EventNode.cs</h3>
+            <pre class="masters-code-block"></pre>
+            <code>
+...
+this.state = await model.Process();
+}
+
+if(state == State.Stable) {
+await connection.SendMessageAsync($"EventNode {id}, {name}, reports stable condition : Statelevel: {State.Stable}");
+}
+else {
+await connection.SendMessageAsync($"EventNode {id}, {name}, reports unstable condition : Statelevel: {state}");
+}
+            </code>
+        </section>
+        <h2>Miscellaneous</h2>
+        In this section, I cover notable points that do not warrant separate sections.
+        <h3>Threading</h3>
+        Each node runs in its own thread, avoiding blocking between nodes. However, faster nodes may read data from others that have not yet finished processing.
+        <h3>Name Extraction</h3>
+        It proved useful to analyse username characteristics within REPS rather than in a separate service. This was beneficial in the use case shown in the Bot Creation example. It led to the development of an extraction module, which could follow a code injection pattern if extended, enabling broader and more precise use of Machine Learning models in REPS.m
+        <h3>Supported Types</h3>
+        Supported types are those recognised by REPS. Initially, support for complex types was considered, but this now appears unnecessary as there is no evident demand beyond simple types.
+        
+
+        <h2>Simulator</h2>
+        A simulator was developed to mimic website traffic, allowing verification that the REPS implementation functions as intended. While unit tests ensure individual components work correctly, testing the entire system in realistic scenarios often reveals issues not covered by unit tests.
+        The simulator generates requests to a website, which then publishes information about this simulated 'attack' to the RabbitMQ broker.
+
+        <embed src="Other/Simulator.pdf" style="height:20vh"/>
+        The simulator will have several different type of events which can occur such as login attempts and creation of new accounts.
+
+        <section>
+            <h3>Simulator.Event.cs</h3>
+            <pre class="masters-code-block">
+                <code>
+class WebSiteLoginEvent : WebSiteActionEvent {
+	public WebSiteLoginEvent(string site, int seed, int minimumRequests, int maxmimumRequests) : base(site, seed, minimumRequests, maxmimumRequests, null) {
+		this.message = new JObject();
+	}
+	
+	public override async void Start() {
+		for(int j = 0; j &lt; numberOfAttacks; j++) {
+			string name = ""; string password = "";
+			int length = random.Next(20) + 2;
+			for(int i = 0; i &lt; length; i++) {
+				name += random.Next(2) == 1 ? letters[random.Next(letters.Length)] : letters[random.Next(letters.Length)].ToString().ToUpper();
+			}
+			for(int i = 0; i &lt; length; i++) {
+				password += random.Next(2) == 1 ? letters[random.Next(letters.Length)] : letters[random.Next(letters.Length)].ToString().ToUpper();
+			}
+			this.message["username"] = name;
+			this.message["password"] = password;
+			await client.PostAsync(site + "/login", new StringContent(message.ToString(), Encoding.UTF8, "application/json"));
+		}
+	}
+}
+                </code>
+            </pre>
+
+        </section>
+        The simulator also supports saving the data into a csv file, which can be used to train the machine learning models.
+        
+        <h2>GUI</h2>
+        The GUI was developed to assist with testing and experimentation. It serves both as a development tool and as part of the final product for the user. The GUI is built using C# Blazor, chosen for its Linux support—which other C# frameworks lack—and my familiarity with it. Using the same language as REPS enables direct use of the config files implemented in REPS.
+
+        Since the GUI is primarily a development aid, I do not plan to update it alongside REPS. Instead, it dynamically adapts to the config files, easing development and testing. The GUI reduces misconfigurations and speeds up the creation of new configurations by generating JSON files used to launch a REPS instance.
+
+        Blazor was also selected for its component-based architecture, allowing easy addition or reuse of pages and components. Alternative frameworks such as WinUI, Windows Forms, and MAUI were considered but dismissed due to either lack of Linux support or my limited experience with them.
+
+
+        Development of the GUI was never completed, as it was not deemed essential for REPS. Work ceased once it became clear the effort would not yield sufficient value.
+
+        <section>
+            <h3>JSON.razor</h3>
+            <pre class="masters-code-block">
+                <code>
+public List&lt;(string, string, Guid, int)&gt; GetTypes&lt;T&gt;() {
+	List&lt;(string, string, Guid, int)&gt; types = new(); // I did not use dictionary to avoid the risk of macthing keys
+	
+	if (typeof(T) == typeof(SensorConfig)) {
+		foreach (FieldInfo? field in fieldsTypes[0].GetFields(BindingFlags.Public | BindingFlags.Instance)) {
+			Guid guid = Guid.NewGuid();
+			AddGuidToKey(configNumber, guid);
+			types.Add((field.Name, field.FieldType.Name, guid, configNumber));
+		}
+	}
+	else if (typeof(T) == typeof(EventConfig)) {
+		foreach (FieldInfo? field in fieldsTypes[1].GetFields(BindingFlags.Public | BindingFlags.Instance)) {
+			types.Add((field.Name, field.FieldType.Name, Guid.NewGuid(), configNumber));
+		}
+	}
+	else if (typeof(T) == typeof(ModelConfig)) {
+		foreach (FieldInfo? field in fieldsTypes[2].GetFields(BindingFlags.Public | BindingFlags.Instance)) {
+			types.Add((field.Name, field.FieldType.Name, Guid.NewGuid(), configNumber));
+		}
+	}
+	return types;
+}
+                </code>
+            </pre>
+        </section>
+        This method has access to the same struct config types used in REPS. This allows automatic generation of a table where users can input the relevant information.
+        <img src="/workinprogress.png" />
+    </section>
+
+</div>
+
+
+@inject IJSRuntime JS
+
+@code {
+    private async Task DownloadPDF(){
+        await JS.InvokeVoidAsync("downloadMastersPDF");
+    }
+}
