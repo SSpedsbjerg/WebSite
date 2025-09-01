@@ -27,6 +27,7 @@ jobs:
         working-directory: FremmødeSystem
         run: dotnet restore FremmødeSystem.sln
       - name: Build
+        working-directory: FremmødeSystem
         run: dotnet build --no-restore
 
   PushFrontendToDocker:
