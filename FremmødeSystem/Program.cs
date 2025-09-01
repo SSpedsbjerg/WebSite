@@ -4,6 +4,7 @@ class Program {
     private static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
         // Hello
+        // test
         // Add services to the container.
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
