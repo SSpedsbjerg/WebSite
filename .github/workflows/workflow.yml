@@ -53,3 +53,4 @@ jobs:
           file: ./FremmødeSystem/Dockerfile
           push: true
           tags: spedsbjerg/spedsbjergwebsite:latest
+          platforms: linux/arm64,linux/amd64

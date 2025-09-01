@@ -4,6 +4,7 @@ name: "hjemmeside"
 services:
   frontend:
     image: spedsbjerg/spedsbjergwebsite:latest
+    network_mode: "host"
     restart: always
     ports:
       - "8080:8080"
