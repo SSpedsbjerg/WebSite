@@ -49,7 +49,7 @@ jobs:
       - name: Build And Push FrontendImage
         uses: docker/build-push-action@v2
         with:
-          context: FremmødeSystem/dockerfile
+          context: ./FremmødeSystem/dockerfile
           file: dockerfile
           push: true
-          tags: spedsbjerg/spedsbjergwebsite:LTS
+          tags: spedsbjerg/spedsbjergwebsite:latest
