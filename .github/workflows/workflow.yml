@@ -24,7 +24,7 @@ jobs:
         with:
           dotnet-version: 9.0.x
       - name: restore dependencies
-        run: dotnet restore FremmødeSystem.sln
+        run: dotnet restore FremmødeSystem/FremmødeSystem.sln
       - name: Build
         run: dotnet build --no-restore
 
