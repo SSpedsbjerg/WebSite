@@ -56,6 +56,7 @@ jobs:
         uses: docker/build-push-action@v2
       - name: Create and use buildx builder
         run: docker buildx create --name mybuilder --use --driver docker-container
+      - name: Bootstrap
         run: docker buildx inspect --bootstrap
         with:
           context: ./FremmødeSystem
