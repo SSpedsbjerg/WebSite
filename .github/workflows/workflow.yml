@@ -48,9 +48,8 @@ jobs:
           images: ghcr.io/frontend
       - name: Build And Push FrontendImage
         uses: docker/build-push-action@v2
-        working-directory: FremmødeSystem
         with:
-          context: ./
+          context: FremmødeSystem/dockerfile
           file: dockerfile
           push: true
           tags: spedsbjerg/spedsbjergwebsite:LTS
