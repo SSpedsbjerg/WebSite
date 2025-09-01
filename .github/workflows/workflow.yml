@@ -63,4 +63,4 @@ jobs:
           file: ./FremmoedeSystem/Dockerfile
           push: true
           tags: spedsbjerg/spedsbjergwebsite:latest
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64,linux/amd64,linux/arm/v7
