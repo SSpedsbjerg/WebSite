@@ -569,7 +569,6 @@ private static bool CreateConnection() {
         return true;
     }
 }
-\end{lstlisting}
                     </code>
                 </pre>
             </div>
@@ -837,7 +836,7 @@ using (var reader = command.ExecuteReader()) {
 
             <h3>Communication</h3>
             <p>
-                As the controller service is made with C#, we will be using one of the frameworks for C#. In this project will be using AspNetCore for its ability to accept http requests and respond. As stated in section \ref{DataExchange}, the controller will be communicating via a rest API and http responses will thereby be JSON. As JSON is object-oriented and the frontend will be using react which operates with an object oriented model. Keeping the objects as is will make the controller less complicated, which would reduce the risk of errors and it would make it easy for the front end to assemble the objects into objects which is similar to the controllers.
+                As the controller service is made with C#, we will be using one of the frameworks for C#. In this project will be using AspNetCore for its ability to accept http requests and respond. As stated in section about data exchange, the controller will be communicating via a rest API and http responses will thereby be JSON. As JSON is object-oriented and the frontend will be using react which operates with an object oriented model. Keeping the objects as is will make the controller less complicated, which would reduce the risk of errors and it would make it easy for the front end to assemble the objects into objects which is similar to the controllers.
                 C#s JsonSerializer can make objects into a JSON version which allows for easier and less complicated transformation of data.
             </p>
             <p>
@@ -879,29 +878,30 @@ using (var reader = command.ExecuteReader()) {
                 </div>
                 <pre class="rdd-pre">
                 <code class="rdd-code rdd-code-cs">
-	matches = matches.OrderByDescending(x =&gt; x.Weight).ToList();
-	int index = matches.Count - 1;
-	while(index != 0) {
-		if(matches[index].Weight < 0) {
-			matches.Remove(matches[index]);
-		}
-		index--;
-	}
-	if(matches[0].Weight < 0) {
+matches = matches.OrderByDescending(x =&gt; x.Weight).ToList();
+int index = matches.Count - 1;
+while(index != 0) {
+	if(matches[index].Weight !lt; 0) {
 		matches.Remove(matches[index]);
 	}
-	float totalWeight = 0;
-	foreach(IDisease disease in matches) {
-		totalWeight += disease.Weight;
-	}
+	index--;
+}
+if(matches[0].Weight &lt; 0) {
+	matches.Remove(matches[index]);
+}
+float totalWeight = 0;
+foreach(IDisease disease in matches) {
+	totalWeight += disease.Weight;
+}
 	
-	foreach(IDisease disease in matches) {
-		disease.Weight /= totalWeight;
-		disease.Weight *= 100;
-	}
+foreach(IDisease disease in matches) {
+	disease.Weight /= totalWeight;
+	disease.Weight *= 100;
+}
                     </code>
                 </pre>
             </div>
+
 </section>
     </main>
 </div>
