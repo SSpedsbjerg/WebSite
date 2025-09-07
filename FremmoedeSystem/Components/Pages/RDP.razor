@@ -569,7 +569,6 @@ private static bool CreateConnection() {
         return true;
     }
 }
-\end{lstlisting}
                     </code>
                 </pre>
             </div>
@@ -772,8 +771,138 @@ command.ExecuteNonQuery();
                     </code>
                 </pre>
             </div>
-            <p>Continue from Getting data from the Database in Implementation section</p>
-        </section>
+            <p>For getting data from the database is much the same as adding it, we start from the bottom of the hierarchy and go towards the top. All objects will be put into a list in the method and will return it as a ICollection&lt;IRegion&gt;
+For the Regions, we simply extract all regions and add them to the list as a new region with the values taken from the region table.</p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = "SELECT * FROM Regions";
+using (var reader = command.ExecuteReader()) {  
+ while(await reader.ReadAsync()) {
+  regions.Add(new Region(reader.GetString(1), reader.GetInt32(0)));
+ }
+}
+return regions;
+                    </code>
+                </pre>
+            </div>
+            <p>
+                For getting the symptoms, we have to add the regions on as well. The GetSymptomsAsync() starts of by getting all of the symptoms.
+            </p>
+
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+command.CommandText = "SELECT * FROM Symptoms";
+using (var reader = command.ExecuteReader()) {
+ while (reader.Read()) {
+  *Creats new object of Symptom and adds them to a list*
+ }
+}
+                    </code>
+                </pre>
+            </div>
+            <p>
+                Next we will get the reference to the regions, as mentioned in section about adding to database, the symptom has an ID, and it will find all regions which contains an ID next to the symptoms ID in SymptomsReference table.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Controller.DatabaseController</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+List&lt;IRegion&gt; regions = (List&lt;IRegion&gt;)await GetRegionsAsync();
+using (var reader = command.ExecuteReader()) {
+	while(reader.Read()) {
+		foreach(ISymptom symptom in symptoms) {//search the symptoms
+			foreach(IRegion region in regions) {//search for all regions
+				if(region.ID == reader.GetInt32(2) & reader.GetInt32(1) == symptom.ID) {//if a regions id matches with any the regions references add the region to the symptom
+					symptom.AddRegion(region);
+				}
+			}
+                    </code>
+                </pre>
+            </div>
+            <p>GetSymptomsAsync uses GetRegionAsync to retrieve the regions.</p>
+            <p>
+                For getting diseases it is much the same as getting symptoms, the GetDiseaseAsync method gets the diseases from the database, when calls the GetSymptomsAsync method to get the symptoms and then adds the correct symptoms to its diseases.
+            </p>
+
+            <h3>Communication</h3>
+            <p>
+                As the controller service is made with C#, we will be using one of the frameworks for C#. In this project will be using AspNetCore for its ability to accept http requests and respond. As stated in section about data exchange, the controller will be communicating via a rest API and http responses will thereby be JSON. As JSON is object-oriented and the frontend will be using react which operates with an object oriented model. Keeping the objects as is will make the controller less complicated, which would reduce the risk of errors and it would make it easy for the front end to assemble the objects into objects which is similar to the controllers.
+                C#s JsonSerializer can make objects into a JSON version which allows for easier and less complicated transformation of data.
+            </p>
+            <p>
+                The data controllers job is to take in requests and return data back. It will make objects of data it receives which it can use to communicate with other components of the system, but it will not make any other calculations.
+            </p>
+            <h3>Logging</h3>
+            <p>
+                To allow easier future error handling, Warning and Error logging system is implemented. The Error log is to handle situations where the system couldn’t  handle a situation, this could be missing data, couldn't create a database connection or anything similar.
+            </p>
+            <h3>Rare Disease Determiner</h3>
+            <p>
+                In this first iteration of the product, the Rare Disease Determiner (RDD) has a very simple solution which.
+            </p>
+            <p>
+                The current solution has three sections to it, the first separates the diseases based on whether they contain the symptoms which the patient has. The second section gives the disease a score. As the disease already has an attribute for score, the score will be set here.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Implementations.RDDeterminer</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+ if(userSymptom.Name.Equals(symptom.Name)) {
+    disease.Weight += 1.0f / symptoms.Count;
+ }
+ else {
+    disease.Weight -= 0.05f / symptoms.Count;
+ }
+
+                    </code>
+                </pre>
+            </div>
+            <p>
+                For the third section of the RDDeterminer, the low scoring diseases are removed, and the rest is split up and their score is made into a percentage to make the score more user readable.
+            </p>
+            <div class="rdd-code-block">
+                <div class="rdd-code-header">
+                    <span class="rdd-code-lang">RareDiseasePredicter.Implementations.RDDeterminer</span>
+                </div>
+                <pre class="rdd-pre">
+                <code class="rdd-code rdd-code-cs">
+matches = matches.OrderByDescending(x =&gt; x.Weight).ToList();
+int index = matches.Count - 1;
+while(index != 0) {
+	if(matches[index].Weight !lt; 0) {
+		matches.Remove(matches[index]);
+	}
+	index--;
+}
+if(matches[0].Weight &lt; 0) {
+	matches.Remove(matches[index]);
+}
+float totalWeight = 0;
+foreach(IDisease disease in matches) {
+	totalWeight += disease.Weight;
+}
+	
+foreach(IDisease disease in matches) {
+	disease.Weight /= totalWeight;
+	disease.Weight *= 100;
+}
+                    </code>
+                </pre>
+            </div>
+
+</section>
     </main>
 </div>
 
