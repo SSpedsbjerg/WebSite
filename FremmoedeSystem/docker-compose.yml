@@ -1,6 +1,4 @@
 version: "3.9"
-name: "hjemmeside"
-
 services:
   frontend:
     image: spedsbjerg/spedsbjergwebsite:latest
