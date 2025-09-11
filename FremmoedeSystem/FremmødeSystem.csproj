@@ -16,4 +16,8 @@
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.70.0.3819" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="certs\" />
+  </ItemGroup>
+
 </Project>
