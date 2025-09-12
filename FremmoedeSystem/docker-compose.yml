@@ -13,7 +13,7 @@ services:
       - cert_password
     environment:
       - CERT_PASSWORD_FILE=/run/secrets/cert_password
-      - CERT_PATH=/certs/example.com.pfx
+      - CERT_PATH=/certs/simonspedsbjerg.com.pfx
     ports:
       - "8080:8080"
       - "443:8080"
