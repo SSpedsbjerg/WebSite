@@ -11,7 +11,8 @@ class Program {
         string password = "";
         if(!args.Contains("--no-ssl")) {
             certPath = builder.Configuration["Kestrel:Endpoints:Https:Certificate:Path"];
-            password = File.ReadAllText("CERT_PASSWORD_FILE").Trim();
+            var certPasswordFile = Environment.GetEnvironmentVariable("CERT_PASSWORD_FILE") ?? "/run/secrets/cert_password";
+            password = File.ReadAllText(certPasswordFile).Trim();
         }
 
         if(!args.Contains("--no-ssl")) {
