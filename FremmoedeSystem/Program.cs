@@ -19,7 +19,7 @@ class Program {
         if(!args.Contains("--no-ssl")) {
             builder.WebHost.ConfigureKestrel(options => {
                 options.ConfigureHttpsDefaults(https => {
-                    https.ServerCertificate = new X509Certificate2(certPath, password);
+                    https.ServerCertificate = new X509Certificate2(certPath);
                 });
             });
         }
