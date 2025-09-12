@@ -7,7 +7,6 @@ secrets:
     file: ./simonspedsbjerg.dk.pfx
 services:
   frontend:
-    user: root
     image: spedsbjerg/spedsbjergwebsite:latest
     restart: always
     volumes:
