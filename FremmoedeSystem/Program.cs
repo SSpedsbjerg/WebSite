@@ -1,4 +1,5 @@
 using FremmødeSystem.Components;
+using System.Security.Cryptography.X509Certificates;
 
 class Program {
     private static void Main(string[] args) {
@@ -10,7 +11,7 @@ class Program {
         string? certPath = "";
         string password = "";
         if(!args.Contains("--no-ssl")) {
-            certPath = builder.Configuration["Kestrel:Endpoints:Https:Certificate:Path"];
+            certPath = Environment.GetEnvironmentVariable("CERT_PATH") ?? "/certs/example.com.pfx";
             var certPasswordFile = Environment.GetEnvironmentVariable("CERT_PASSWORD_FILE") ?? "/run/secrets/cert_password";
             password = File.ReadAllText(certPasswordFile).Trim();
         }
@@ -18,7 +19,7 @@ class Program {
         if(!args.Contains("--no-ssl")) {
             builder.WebHost.ConfigureKestrel(options => {
                 options.ConfigureHttpsDefaults(https => {
-                    https.ServerCertificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(certPath, password);
+                    https.ServerCertificate = new X509Certificate2(certPath, password);
                 });
             });
         }
