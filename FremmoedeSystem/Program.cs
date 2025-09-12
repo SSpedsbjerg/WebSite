@@ -11,7 +11,7 @@ class Program {
         string? certPath = "";
         string password = "";
         if(!args.Contains("--no-ssl")) {
-            certPath = Environment.GetEnvironmentVariable("CERT_PATH") ?? "/certs/example.com.pfx";
+            certPath = Environment.GetEnvironmentVariable("CERT_PATH") ?? "/certs/simonspedsbjerg.dk.pfx";
             var certPasswordFile = Environment.GetEnvironmentVariable("CERT_PASSWORD_FILE") ?? "/run/secrets/cert_password";
             password = File.ReadAllText(certPasswordFile).Trim();
         }
