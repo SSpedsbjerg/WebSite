@@ -15,7 +15,7 @@ class Program {
             password = File.ReadAllText(certPasswordFile).Trim();
         }
 
-        Console.WriteLine($"CerthPath: {certPath}, CertPass: {password}");
+        Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
         if(!args.Contains("--no-ssl")) {
             builder.WebHost.ConfigureKestrel(options => {
                 options.ConfigureHttpsDefaults(https => {
