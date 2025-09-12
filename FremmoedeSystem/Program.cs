@@ -16,17 +16,11 @@ class Program {
         }
 
         Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
-        if(!args.Contains("--no-ssl")) {
-            builder.WebHost.ConfigureKestrel(options => {
-                options.ConfigureHttpsDefaults(https => {
-                    https.ServerCertificate = new X509Certificate2(certPath);
-                });
-            });
-        }
-
-        builder.WebHost.UseKestrel(options => {
+        builder.WebHost.ConfigureKestrel(options => {
             options.ListenLocalhost(80);
-            options.ListenLocalhost(443, builder => { builder.UseHttps(); });
+            options.ListenLocalhost(443, listenOptions => {
+                listenOptions.UseHttps(new X509Certificate2(certPath));
+            });
         });
 
 
