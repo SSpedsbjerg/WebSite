@@ -3,7 +3,7 @@ version: "3.9"
 secrets:
   cert_password:
     file: ./cert_password.txt
-  cert:
+  simonspedsbjerg.dk.pfx:
     file: ./simonspedsbjerg.dk.pfx
 services:
   frontend:
@@ -13,7 +13,7 @@ services:
       - /certs:/certs:ro
     secrets:
       - cert_password
-      - cert
+      - simonspedsbjerg.dk.pfx
     environment:
       - CERT_PASSWORD_FILE=/run/secrets/cert_password
       - CERT_PATH=/run/secrets/simonspedsbjerg.dk.pfx
