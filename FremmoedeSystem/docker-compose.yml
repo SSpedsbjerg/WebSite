@@ -9,8 +9,6 @@ services:
   frontend:
     image: spedsbjerg/spedsbjergwebsite:latest
     restart: always
-    volumes:
-      - /certs:/certs:ro
     secrets:
       - cert_password
       - simonspedsbjerg.dk.pfx
@@ -19,8 +17,8 @@ services:
       - CERT_PATH=/run/secrets/simonspedsbjerg.dk.pfx
     ports:
       - "8080:8080"
-      - "443:8080"
-      - "80:8080"
+      - "443:443"
+      - "80:80"
   watchtower:
     image: containrrr/watchtower:latest
     restart: always
