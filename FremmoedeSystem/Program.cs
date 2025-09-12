@@ -12,13 +12,12 @@ class Program {
         if(!args.Contains("--no-ssl")) {
             certPath = Environment.GetEnvironmentVariable("CERT_PATH") ?? "/run/secrets/simonspedsbjerg.dk.pfx";
             var certPasswordFile = Environment.GetEnvironmentVariable("CERT_PASSWORD_FILE") ?? "/run/secrets/cert_password";
-            password = File.ReadAllText(certPasswordFile).Trim();
         }
 
         Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
         builder.WebHost.ConfigureKestrel(options => {
-            options.ListenLocalhost(80);
-            options.ListenLocalhost(443, listenOptions => {
+            options.ListenAnyIP(80);
+            options.ListenAnyIP(443, listenOptions => {
                 listenOptions.UseHttps(new X509Certificate2(certPath));
             });
         });
