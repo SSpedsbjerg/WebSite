@@ -3,7 +3,6 @@ using System.Security.Cryptography.X509Certificates;
 
 class Program {
     private static void Main(string[] args) {
-        Console.WriteLine(args);
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
@@ -16,6 +15,7 @@ class Program {
             password = File.ReadAllText(certPasswordFile).Trim();
         }
 
+        Console.WriteLine($"CerthPath: {certPath}, CertPass: {password}");
         if(!args.Contains("--no-ssl")) {
             builder.WebHost.ConfigureKestrel(options => {
                 options.ConfigureHttpsDefaults(https => {
