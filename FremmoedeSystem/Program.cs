@@ -24,6 +24,11 @@ class Program {
             });
         }
 
+        builder.WebHost.UseKestrel(options => {
+            options.ListenLocalhost(80);
+            options.ListenLocalhost(443, builder => { builder.UseHttps(); });
+        });
+
 
         var app = builder.Build();
 
