@@ -3,6 +3,8 @@ version: "3.9"
 secrets:
   cert_password:
     file: ./cert_password.txt
+  cert:
+    file: ./simonspedsbjerg.dk.pfx
 services:
   frontend:
     image: spedsbjerg/spedsbjergwebsite:latest
@@ -11,9 +13,10 @@ services:
       - /certs:/certs:ro
     secrets:
       - cert_password
+      - cert
     environment:
       - CERT_PASSWORD_FILE=/run/secrets/cert_password
-      - CERT_PATH=/certs/simonspedsbjerg.dk.pfx
+      - CERT_PATH=/run/secrets/simonspedsbjerg.dk.pfx
     ports:
       - "8080:8080"
       - "443:8080"
