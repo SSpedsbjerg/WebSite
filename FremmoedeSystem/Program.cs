@@ -17,6 +17,7 @@ class Program {
         Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
         builder.WebHost.ConfigureKestrel(options => {
             options.ListenAnyIP(80);
+            
             options.ListenAnyIP(443, listenOptions => {
                 listenOptions.UseHttps(new X509Certificate2(certPath));
             });

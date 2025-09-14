@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+
+<div class="dkd-layout">
+    <nav class="navbar">
+        <div class="home">
+            <p>@username</p>
+        </div>
+        <div>
+            <NavLink href="/dkd/galleri/">@showGallery()</NavLink>
+        </div>
+        <div>
+            <NavLink href="https://discord.gg/6RJTvb9XyD">Discord</NavLink>
+            <NavLink href="@youtubeLink">Youtube</NavLink>
+            <NavLink href="/dkd/login/">Login</NavLink>
+        </div>
+    </nav>
+
+    <div class="dkd">
+        @Body
+    </div>
+</div>
+
+@code{
+    private bool loggedIn = false;
+    private string username = "Not Logged in";
+    private const string galleryString = "Galleri";
+    private string showGallery(){
+        return loggedIn ? galleryString : "";
+    }
+    private const string youtubeLink = "https://www.youtube.com/@DenKongeligeDanskeH%C3%A6r";
+}

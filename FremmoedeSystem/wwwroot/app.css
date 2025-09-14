@@ -1627,3 +1627,34 @@ h1:focus {
     color: #dbe7f3;
     font-style: italic;
 }
+
+.dkd {
+
+}
+
+.dkd-sidebars {
+    position: relative;
+    width: 100%;
+}
+
+.dkd-sidebar-left,
+.dkd-sidebar-right {
+    position: absolute;
+    top: 0;
+    height: 1500px;
+    object-fit: contain;
+}
+
+.dkd-sidebar-left {
+    left: 0;
+}
+
+.dkd-sidebar-right {
+    right: 0;
+    transform: scaleX(-1);
+}
+
+.dkd-background {
+    background-color: #0F2C04;
+    height: 1000vh;
+}
