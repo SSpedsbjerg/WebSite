@@ -7,7 +7,7 @@ class Program {
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-        const string certPath = "simonspedsbjerg.dk.pfx";
+        const string certPath = "/run/secrets/simonspedsbjerg.dk.pfx";
         string password = "";
 
         Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
