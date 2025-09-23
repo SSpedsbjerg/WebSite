@@ -28,7 +28,9 @@ jobs:
         run: dotnet restore FremmødeSystem.sln
       - name: Build
         working-directory: FremmoedeSystem
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --configuration Release
+      - name: Run FrontendTests
+        run : dotnet test ./FremmoedeSystem.Tests/FremmoedeSystem.Tests.csproj --no-build --verbosity normal
 
   PushFrontendToDocker:
     runs-on: ubuntu-latest

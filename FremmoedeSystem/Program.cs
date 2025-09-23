@@ -1,20 +1,24 @@
 using FremmødeSystem.Components;
+using FremmødeSystem.Structs;
 using System.Security.Cryptography.X509Certificates;
 
 class Program {
+    
     private static void Main(string[] args) {
+        StartupConfiguration config = new StartupConfiguration();
+
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-        const string certPath = "/run/secrets/simonspedsbjerg.dk.pfx";
+        
         string password = "";
 
-        Console.WriteLine($"CerthPath: '{certPath}', CertPass: '{password}'");
+        Console.WriteLine($"CerthPath: '{config.CertificationPath}', CertPass: '{password}'");
         builder.WebHost.ConfigureKestrel(options => {
             options.ListenAnyIP(80);
             options.ListenAnyIP(443, listenOptions => {
-                listenOptions.UseHttps(new X509Certificate2(certPath));
+                listenOptions.UseHttps(new X509Certificate2(config.CertificationPath));
             });
         });
 
